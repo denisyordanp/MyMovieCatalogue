@@ -22,7 +22,7 @@ public class MovieDetail extends AppCompatActivity {
         DetailFragment detailFragment = new DetailFragment();
 
         Fragment fragment = fragmentManager.findFragmentByTag(DetailFragment.class.getSimpleName());
-        if (!(fragment instanceof DetailFragment)){
+        if (!(fragment instanceof DetailFragment)) {
 
             Bundle bundle = new Bundle();
             bundle.putString(DetailFragment.EXTRA_TITLE, movie.getTitle());

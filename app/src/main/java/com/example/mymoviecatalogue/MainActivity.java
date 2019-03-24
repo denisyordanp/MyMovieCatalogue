@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements MainView{
+public class MainActivity extends AppCompatActivity implements MainView {
 
     private MainPresenter.MovieAdapter adapter;
     private ArrayList<MainModel.Movie> movies;
@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
     }
 
-    private void addItem(){
+    private void addItem() {
         movies = new ArrayList<>();
 
-        for (int i = 0; i < dataTitle.length; i++){
+        for (int i = 0; i < dataTitle.length; i++) {
             MainModel.Movie movie = new MainModel.Movie();
             movie.setPhoto(dataPhoto.getResourceId(i, -1));
             movie.setTitle(dataTitle[i]);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
         adapter.setMovies(movies);
     }
 
-    private void prepare(){
+    private void prepare() {
         dataTitle = getResources().getStringArray(R.array.data_title);
         dataPhoto = getResources().obtainTypedArray(R.array.data_photo);
         dataDescription = getResources().getStringArray(R.array.data_description);
@@ -81,5 +81,6 @@ public class MainActivity extends AppCompatActivity implements MainView{
     }
 
     @Override
-    public void showMovie(MainModel.Movie modelMovie) { }
+    public void showMovie(MainModel.Movie modelMovie) {
+    }
 }

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-public class DetailFragment extends Fragment implements View.OnClickListener{
+public class DetailFragment extends Fragment implements View.OnClickListener {
 
     public static String EXTRA_TITLE = "extra_title", EXTRA_DESCRIPTION = "extra_description", EXTRA_RELEASE = "extra_release", EXTRA_DIRECTORS = "extra_directors", EXTRA_PHOTO = "extra_photo";
 
@@ -26,7 +26,8 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
     private String[] dataTitle, dataDescription, dataDirectors, dataRelease;
     private TypedArray dataPhoto;
 
-    public DetailFragment() { }
+    public DetailFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -64,15 +65,15 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    private void addItem(){
+    private void addItem() {
 
-        for (int i = 0; i < dataPhoto.length(); i++){
+        for (int i = 0; i < dataPhoto.length(); i++) {
             ImageView imageView = new ImageView(getContext());
-            LinearLayout.LayoutParams size = new LinearLayout.LayoutParams(350,350);
+            LinearLayout.LayoutParams size = new LinearLayout.LayoutParams(350, 350);
             imageView.setId(i);
             imageView.setLayoutParams(size);
-            imageView.setPadding(10,10,10,10);
-            Glide.with(this).load(dataPhoto.getResourceId(i,-1)).into(imageView);
+            imageView.setPadding(10, 10, 10, 10);
+            Glide.with(this).load(dataPhoto.getResourceId(i, -1)).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setOnClickListener(this);
             linearLayout.addView(imageView);
@@ -80,7 +81,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    private void prepare(){
+    private void prepare() {
 
         dataTitle = getResources().getStringArray(R.array.data_title);
         dataPhoto = getResources().obtainTypedArray(R.array.data_photo);
@@ -99,7 +100,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener{
         txtDetailTitle.setText(dataTitle[i]);
         txtDetailDirectors.setText(dataDirectors[i]);
         txtDetailRealese.setText(dataRelease[i]);
-        Glide.with(this).load(dataPhoto.getResourceId(i,-1)).into(imgDetailPhoto);
+        Glide.with(this).load(dataPhoto.getResourceId(i, -1)).into(imgDetailPhoto);
 
     }
 }
