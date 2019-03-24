@@ -1,0 +1,136 @@
+<resources>
+    <string name="app_name">My Movie Catalogue</string>
+    <string name="title">Judul</string>
+    <string name="description">Deskripsi</string>
+    <string name="img_des">Deskripsi Foto</string>
+    <string name="realese_date">Realese date</string>
+    <string name="directors">Directors</string>
+    <string name="russo">Anthony Russo, Joe Russo</string>
+    <string name="april_25_2018">April 25, 2018</string>
+    <string name="detail_photo">detail_photo</string>
+
+    <string-array name="data_directors">
+        <item>James Wan</item>
+        <item>Bradley Cooper</item>
+        <item>Anthony Russo, Joe Russo</item>
+        <item>Susanne Bier</item>
+        <item>Bryan Singer</item>
+        <item>Travis Knight</item>
+        <item>Steven Caple Jr.</item>
+        <item>David Leitch</item>
+        <item>Dean DeBlois</item>
+        <item>Tatsuya Nagamine</item>
+        <item>M. Night Shymalan</item>
+        <item>Donnovan Marsh</item>
+        <item>Rob Marshall</item>
+        <item>Christian Rivers</item>
+        <item>Aris Nugraha</item>
+        <item>Otto Bathurst</item>
+        <item>Peter Ramsey, Bob Persichetti, Rodney Rothman</item>
+        <item>Fede Alvarez</item>
+        <item>CLint Eastwood</item>
+        <item>Ruben Fleischer</item>
+    </string-array>
+
+    <string-array name="data_release">
+        <item>December 21, 2018</item>
+        <item>October 19, 2018</item>
+        <item>April 26, 2019</item>
+        <item>November 12, 2018</item>
+        <item>October 27, 2018</item>
+        <item>December 19, 2018</item>
+        <item>November 28, 2018</item>
+        <item>May 15, 2018</item>
+        <item>January 23, 2019</item>
+        <item>November 14, 2018</item>
+        <item>January 16, 2019</item>
+        <item>October 24, 2018</item>
+        <item>December 20, 2018</item>
+        <item>December 13, 2018</item>
+        <item>January 17, 2019</item>
+        <item>November 20, 2018</item>
+        <item>December 12, 2018</item>
+        <item>November 19, 2018</item>
+        <item>March 17, 2019</item>
+        <item>October 3, 2018</item>
+    </string-array>
+
+    <string-array name="data_title">
+        <item>Aquaman</item>
+        <item>A Star Is Born</item>
+        <item>Avenger Infinity War</item>
+        <item>Bird Box</item>
+        <item>Bohemian Rhapsody</item>
+        <item>Bumble Bee</item>
+        <item>Creed II</item>
+        <item>Deadpool 2</item>
+        <item>How To Train Your Dragon: The Hidden World</item>
+        <item>Dragon Ball Super: Broly</item>
+        <item>Glass</item>
+        <item>Hunter Killer</item>
+        <item>Mary Poppins Returns</item>
+        <item>Mortal Engines</item>
+        <item>Preman Pensiun</item>
+        <item>Robin Hood</item>
+        <item>Spider-Man: Into The Spider Verse</item>
+        <item>The Girl In The Spiders Web</item>
+        <item>The Mule</item>
+        <item>Venom</item>
+    </string-array>
+
+    <string-array name="data_description">
+        <item>Once home to the most advanced civilization on Earth, the city of Atlantis is now an underwater kingdom ruled by the power hungry King Orm. With a vast army at his disposal, Orm plans to conquer the remaining oceanic people and then the surface world. Standing in his way is Aquaman, Orms half-human, half-Atlantean brother and true heir to the throne. With help from royal counselor Vulko, Aquaman must retrieve the legendary Trident of Atlan and embrace his destiny as protector of the deep.</item>
+        <item>Seasoned musician Jackson Maine discovers and falls in love with struggling artist Ally. She has just about given up on her dream to make it big as a singer until Jackson coaxes her into the spotlight. But even as Allys career takes off, the personal side of their relationship is breaking down, as Jackson fights an ongoing battle with his own internal demons.</item>
+        <item>Adrift in space with no food or water, Tony Stark sends a message to Pepper Potts as his oxygen supply starts to dwindle. Meanwhile, the remaining Avengers Thor, Black Widow, Captain America and Bruce Banner must figure out a way to bring back their vanquished allies for an epic showdown with Thanos the evil demigod who decimated the planet and the universe.</item>
+        <item>When a mysterious force decimates the population, only one thing is certain if you see it, you die. The survivors must now avoid coming face to face with an entity that takes the form of their worst fears. Searching for hope and a new beginning, a woman and her children embark on a dangerous journey through the woods and down a river to find the one place that may offer sanctuary. To make it, theyll have to cover their eyes from the evil that chases them and complete the trip blindfolded.</item>
+        <item>Bohemian Rhapsody is a foot-stomping celebration of Queen, their music and their extraordinary lead singer Freddie Mercury. Freddie defied stereotypes and shattered convention to become one of the most beloved entertainers on the planet. The film traces the meteoric rise of the band through their iconic songs and revolutionary sound. They reach unparalleled success, but in an unexpected turn Freddie, surrounded by darker influences, shuns Queen in pursuit of his solo career. Having suffered greatly without the collaboration of Queen, Freddie manages to reunite with his bandmates just in time for Live Aid. While bravely facing a recent AIDS diagnosis, Freddie leads the band in one of the greatest performances in the history of rock music. Queen cements a legacy that continues to inspire outsiders, dreamers and music lovers to this day</item>
+        <item>On the run in the year of 1987, Bumblebee finds refuge in a junkyard in a small Californian beach town. Charlie, on the cusp of turning 18 and trying to find her place in the world, discovers Bumblebee, battle-scarred and broken.</item>
+        <item>In 1985, Russian boxer Ivan Drago killed former U.S. champion Apollo Creed in a tragic match that stunned the world. Against the wishes of trainer Rocky Balboa, Apollos son Adonis Johnson accepts a challenge from Dragos son another dangerous fighter. Under guidance from Rocky, Adonis trains for the showdown of his life a date with destiny that soon becomes his obsession. Now, Johnson and Balboa must confront their shared legacy as the past comes back to haunt each man.</item>
+        <item>Wade Wilson (Ryan Reynolds) is a former Special Forces operative who now works as a mercenary. His world comes crashing down when evil scientist Ajax (Ed Skrein) tortures, disfigures and transforms him into Deadpool. The rogue experiment leaves Deadpool with accelerated healing powers and a twisted sense of humor. With help from mutant allies Colossus and Negasonic Teenage Warhead (Brianna Hildebrand), Deadpool uses his new skills to hunt down the man who nearly destroyed his life.</item>
+        <item>From DreamWorks Animation comes a surprising tale about growing up, finding the courage to face the unknown…and how nothing can ever train you to let go. What began as an unlikely friendship between an adolescent Viking and a fearsome Night Fury dragon has become an epic adventure spanning their lives. Welcome to the most astonishing chapter of one of the most beloved animated franchises in film history: How to Train Your Dragon: The Hidden World.</item>
+        <item>A planet destroyed, a powerful race reduced to nothing. After the devastation of Planet Vegeta, three Saiyans were scattered among the stars, destined for different fates. While two found a home on Earth, the third was raised with a burning desire for vengeance and developed an unbelievable power. And the time for revenge has come. Destinies collide in a battle that will shake the universe to its very core! Goku is back to training hard so he can face the most powerful foes the universes have to offer, and Vegeta is keeping up right beside him. But when they suddenly find themselves against an unknown Saiyan, they discover a terrible, destructive force.</item>
+        <item>M. Night Shyamalan brings together the narratives of two of his standout originals—2000’s Unbreakable, from Touchstone, and 2016’s Split, from Universal—in one explosive, all-new comic-book thriller: Glass. From Unbreakable, Bruce Willis returns as David Dunn as does Samuel L. Jackson as Elijah Price, known also by his pseudonym Mr. Glass. Joining from Split are James McAvoy, reprising his role as Kevin Wendell Crumb and the multiple identities who reside within, and Anya Taylor-Joy as Casey Cooke, the only captive to survive an encounter with The Beast. Following the conclusion of Split, Glass finds Dunn pursuing Crumb’s superhuman figure of The Beast in a series of escalating encounters, while the shadowy presence of Price emerges as an orchestrator who holds secrets critical to both men.</item>
+        <item>American submarine Captain Joe Glass is on the hunt for a U.S. sub in distress in the Arctic Ocean. He soon learns that a secret Russian coup is in the offing, a conspiracy that threatens to dismantle the world order. With crew and country on the line, Glass must assemble an elite group of Navy SEALs to sneak through enemy waters, rescue the kidnapped Russian president and prevent World War III.</item>
+        <item>Decades after her original visit, the magical nanny returns to help the Banks siblings and Michaels children through a difficult time in their lives.</item>
+        <item>Hundreds of years after civilization was destroyed by a cataclysmic event, a mysterious young woman, Hester Shaw (Hera Hilmar), emerges as the only one who can stop London — now a giant, predator city on wheels from devouring everything in its path. Feral, and fiercely driven by the memory of her mother, Hester joins forces with Tom Natsworthy (Robert Sheehan), an outcast from London, along with Anna Fang (Jihae), a dangerous outlaw with a bounty on her head.</item>
+        <item>Setelah tiga tahun, bisnis kecimpring Muslihat yang sudah pensiun sebagai preman, mengalami masalah. Penjualannya mulai menurun. Muslihat juga menghadapi masalah baru saat Safira, anak perempuan satu-satunya, sudah tumbuh remaja dan mulai didatangi lelaki. Masalah lebih besar kemudian muncul, ketika ada masalah di antara mantan anak buahnya.</item>
+        <item>A war-hardened Crusader and his Moorish commander mount an audacious revolt against the corrupt English crown in a thrilling action-adventure packed with gritty battlefield exploits, mind-blowing fight choreography, and a timeless romance.</item>
+        <item>Teen Miles Morales becomes Spider-Man of his reality, crossing his path with five counterparts from another dimensions to stop a threat for all realities.</item>
+        <item>Fired from the National Security Agency, Frans Balder recruits hacker Lisbeth Salander to steal FireWall, a computer program that can access codes for nuclear weapons worldwide. The download soon draws attention from an NSA agent who traces the activity to Stockholm. Further problems arise when Russian thugs take Lisbeths laptop and kidnap a math whiz who can make FireWall work. Now, Lisbeth and an unlikely ally must race against time to save the boy and recover the codes to avert disaster.</item>
+        <item>Broke, alone and facing foreclosure on his business, 90-year-old horticulturist Earl Stone takes a job as a drug courier for a Mexican cartel. His immediate success leads to easy money and a larger shipment that soon draws the attention of hard-charging DEA agent Colin Bates. When Earls past mistakes start to weigh heavily on his conscience, he must decide whether to right those wrongs before law enforcement and cartel thugs catch up to him.</item>
+        <item>Journalist Eddie Brock is trying to take down Carlton Drake, the notorious and brilliant founder of the Life Foundation. While investigating one of Drakes experiments, Eddies body merges with the alien Venom leaving him with superhuman strength and power. Twisted, dark and fueled by rage, Venom tries to control the new and dangerous abilities that Eddie finds so intoxicating.</item>
+    </string-array>
+
+    <string name="des">Bohemian Rhapsody is a foot-stomping celebration of Queen, their music and their extraordinary lead singer Freddie Mercury. Freddie defied stereotypes and shattered convention to become one of the most beloved entertainers on the planet. The film traces the meteoric rise of the band through their iconic songs and revolutionary sound. They reach unparalleled success, but in an unexpected turn Freddie, surrounded by darker influences, shuns Queen in pursuit of his solo career. Having suffered greatly without the collaboration of Queen, Freddie manages to reunite with his bandmates just in time for Live Aid. While bravely facing a recent AIDS diagnosis, Freddie leads the band in one of the greatest performances in the history of rock music. Queen cements a legacy that continues to inspire outsiders, dreamers and music lovers to this day</string>
+    <string name="overview">Overview</string>
+
+    <string-array name="data_photo">
+        <item>@drawable/poster_aquaman</item>
+        <item>@drawable/poster_a_star</item>
+        <item>@drawable/poster_avengerinfinity</item>
+        <item>@drawable/poster_birdbox</item>
+        <item>@drawable/poster_bohemian</item>
+        <item>@drawable/poster_bumblebee</item>
+        <item>@drawable/poster_creed</item>
+        <item>@drawable/poster_deadpool</item>
+        <item>@drawable/poster_dragon</item>
+        <item>@drawable/poster_dragonball</item>
+        <item>@drawable/poster_glass</item>
+        <item>@drawable/poster_hunterkiller</item>
+        <item>@drawable/poster_marrypopins</item>
+        <item>@drawable/poster_mortalengine</item>
+        <item>@drawable/poster_preman</item>
+        <item>@drawable/poster_robinhood</item>
+        <item>@drawable/poster_spiderman</item>
+        <item>@drawable/poster_thegirl</item>
+        <item>@drawable/poster_themule</item>
+        <item>@drawable/poster_venom</item>
+    </string-array>
+
+    <string-array name="realease_date">
+        <item></item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
