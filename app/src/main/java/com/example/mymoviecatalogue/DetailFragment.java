@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
+
 
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
-    public static String EXTRA_TITLE = "extra_title", EXTRA_DESCRIPTION = "extra_description", EXTRA_RELEASE = "extra_release", EXTRA_DIRECTORS = "extra_directors", EXTRA_PHOTO = "extra_photo";
+    public static String EXTRA_TITLE = "extra_title", EXTRA_DESCRIPTION = "extra_description", EXTRA_RELEASE = "extra_release", EXTRA_DIRECTORS = "extra_directors", EXTRA_PHOTO = "extra_photo", EXTRA_CATEGORY = "extra_category";
 
     TextView txtDetailTitle, txtDetailRealese, txtDetailDirectors, txtDetailDescription;
     ImageView imgDetailPhoto;
@@ -78,16 +78,15 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
             imageView.setOnClickListener(this);
             linearLayout.addView(imageView);
         }
-
     }
 
     private void prepare() {
 
-        dataTitle = getResources().getStringArray(R.array.data_title);
-        dataPhoto = getResources().obtainTypedArray(R.array.data_photo);
-        dataDescription = getResources().getStringArray(R.array.data_description);
-        dataDirectors = getResources().getStringArray(R.array.data_directors);
-        dataRelease = getResources().getStringArray(R.array.data_release);
+        dataTitle = getResources().getStringArray(R.array.data_movie_title);
+        dataRelease = getResources().getStringArray(R.array.data_movie_release);
+        dataDirectors = getResources().getStringArray(R.array.data_movie_directors);
+        dataDescription = getResources().getStringArray(R.array.data_movie_description);
+        dataPhoto = getResources().obtainTypedArray(R.array.data_movie_photo);
 
     }
 
@@ -100,7 +99,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         txtDetailTitle.setText(dataTitle[i]);
         txtDetailDirectors.setText(dataDirectors[i]);
         txtDetailRealese.setText(dataRelease[i]);
-        Glide.with(this).load(dataPhoto.getResourceId(i, -1)).into(imgDetailPhoto);
+        Glide.with(this).load(dataPhoto.getResourceId(i, -100)).into(imgDetailPhoto);
 
     }
 }

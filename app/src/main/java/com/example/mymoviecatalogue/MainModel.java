@@ -12,6 +12,15 @@ class MainModel {
         private String description;
         private String release;
         private String directors;
+        private String category;
+
+        String getCategory() {
+            return category;
+        }
+
+        void setCategory(String category) {
+            this.category = category;
+        }
 
         String getRelease() {
             return release;
@@ -68,6 +77,7 @@ class MainModel {
             dest.writeString(this.description);
             dest.writeString(this.release);
             dest.writeString(this.directors);
+            dest.writeString(this.category);
         }
 
         Movie(Parcel in) {
@@ -76,6 +86,7 @@ class MainModel {
             this.description = in.readString();
             this.release = in.readString();
             this.directors = in.readString();
+            this.category = in.readString();
         }
 
         public static final Creator<Movie> CREATOR = new Creator<Movie>() {

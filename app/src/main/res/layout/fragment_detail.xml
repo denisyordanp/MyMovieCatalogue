@@ -1,121 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/base"
     tools:context=".MovieDetail">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/header_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_detail_photo"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/detail_photo"
+            android:scaleType="fitXY"
+            android:src="@drawable/poster_venom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/img_detail_photo"
-                android:layout_width="200dp"
-                android:layout_height="300dp"
-                android:contentDescription="@string/detail_photo"
-                android:scaleType="fitXY"
-                android:src="@drawable/poster_venom"/>
+        <TextView
+            android:id="@+id/txt_detail_title"
+            style="@style/header_text.bold"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/title"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_detail_photo"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txt_detail_title"
-                style="@style/header_text.bold"
-                android:textSize="24sp"
-                android:layout_marginTop="5dp"
-                android:text="@string/title" />
+        <TextView
+            android:id="@+id/txt_tt_detail_realese"
+            style="@style/header_text.bold"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/realese_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_detail_photo"
+            app:layout_constraintTop_toBottomOf="@+id/txt_detail_title" />
 
-            <TextView
-                android:id="@+id/txt_tt_detail_realese"
-                android:layout_below="@id/txt_detail_title"
-                style="@style/header_text.bold"
-                android:text="@string/realese_date" />
+        <TextView
+            android:id="@+id/txt_detail_realese"
+            style="@style/header_text"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/april_25_2018"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_detail_photo"
+            app:layout_constraintTop_toBottomOf="@+id/txt_tt_detail_realese" />
 
-            <TextView
-                android:id="@+id/txt_detail_realese"
-                style="@style/header_text"
-                android:layout_below="@id/txt_tt_detail_realese"
-                android:layout_marginTop="5dp"
-                android:text="@string/april_25_2018" />
+        <TextView
+            android:id="@+id/txt_tt_detail_directors"
+            style="@style/header_text.bold"
+            android:layout_width="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/directors"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_detail_photo"
+            app:layout_constraintTop_toBottomOf="@+id/txt_detail_realese" />
 
-            <TextView
-                android:id="@+id/txt_tt_detail_directors"
-                style="@style/header_text.bold"
-                android:layout_below="@id/txt_detail_realese"
-                android:text="@string/directors" />
+        <TextView
+            android:id="@+id/txt_detail_directors"
+            style="@style/header_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/russo"
+            app:layout_constraintBottom_toBottomOf="@+id/img_detail_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_detail_photo"
+            app:layout_constraintTop_toBottomOf="@+id/txt_tt_detail_directors"
+            app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/txt_detail_directors"
-                style="@style/header_text"
-                android:layout_below="@id/txt_tt_detail_directors"
-                android:layout_marginTop="5dp"
-                android:text="@string/russo" />
-
-        </RelativeLayout>
-
-        <View
-            android:id="@+id/line2"
-            android:layout_below="@id/header_container"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_margin="5dp"/>
-
-        <RelativeLayout
-            android:layout_below="@id/line2"
+        <include
+            android:id="@+id/include"
+            layout="@layout/horizontal_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:orientation="vertical">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_detail_photo" />
 
-            <HorizontalScrollView
-                android:id="@+id/body_container"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp">
+        <TextView
+            android:id="@+id/txt_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/overview"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
 
-                <LinearLayout
-                    android:id="@+id/liv_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"/>
+        <TextView
+            android:id="@+id/txt_detail_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:justificationMode="inter_word"
+            android:text="@string/des"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_overview" />
 
-            </HorizontalScrollView>
-
-            <View
-                android:id="@+id/line1"
-                android:layout_below="@id/body_container"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
-                android:visibility="visible"
-                android:layout_margin="5dp"/>
-
-            <TextView
-                android:id="@+id/txt_overview"
-                android:layout_below="@id/line1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:text="@string/overview"/>
-
-            <TextView
-                android:layout_below="@id/txt_overview"
-                android:id="@+id/txt_detail_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:textSize="18sp"
-                android:text="@string/des"
-                android:textAlignment="center"/>
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

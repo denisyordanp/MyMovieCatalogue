@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import java.util.Objects;
 
 public class MovieDetail extends AppCompatActivity {
 
@@ -14,6 +17,8 @@ public class MovieDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         MainModel.Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
 
@@ -29,11 +34,22 @@ public class MovieDetail extends AppCompatActivity {
             bundle.putString(DetailFragment.EXTRA_DESCRIPTION, movie.getDescription());
             bundle.putString(DetailFragment.EXTRA_RELEASE, movie.getRelease());
             bundle.putString(DetailFragment.EXTRA_DIRECTORS, movie.getDirectors());
+            bundle.putString(DetailFragment.EXTRA_CATEGORY, movie.getCategory());
             bundle.putInt(DetailFragment.EXTRA_PHOTO, movie.getPhoto());
             detailFragment.setArguments(bundle);
 
             fragmentTransaction.add(R.id.frame_container, detailFragment, DetailFragment.class.getSimpleName());
             fragmentTransaction.commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
     }
 }

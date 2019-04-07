@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_movie"
+        android:icon="@drawable/baseline_movie_creation_black_18dp"
+        android:title="@string/movies"/>
+
+    <item
+        android:id="@+id/navigation_tv_series"
+        android:icon="@drawable/baseline_movie_filter_black_18dp"
+        android:title="@string/tv_series"/>
+
+</menu>
