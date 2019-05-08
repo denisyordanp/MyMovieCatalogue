@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/horizontal_rv_poster"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:contentDescription="@string/img_des"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/horizontal_rv_tv_title"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        android:text="@string/title"
+        app:layout_constraintEnd_toEndOf="@+id/horizontal_rv_poster"
+        app:layout_constraintStart_toStartOf="@+id/horizontal_rv_poster"
+        app:layout_constraintTop_toBottomOf="@+id/horizontal_rv_poster" />
+
+</android.support.constraint.ConstraintLayout>

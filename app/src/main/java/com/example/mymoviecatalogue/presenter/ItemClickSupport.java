@@ -1,8 +1,10 @@
-package com.example.mymoviecatalogue;
+package com.example.mymoviecatalogue.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.example.mymoviecatalogue.R;
 
 public class ItemClickSupport {
     private final RecyclerView recyclerView;
@@ -11,7 +13,7 @@ public class ItemClickSupport {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (onItemClickListener != null){
+            if (onItemClickListener != null) {
                 RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(v);
                 onItemClickListener.onItemCLicked(recyclerView, holder.getAdapterPosition(), v);
             }
@@ -21,7 +23,7 @@ public class ItemClickSupport {
     private RecyclerView.OnChildAttachStateChangeListener attachStateChangeListener = new RecyclerView.OnChildAttachStateChangeListener() {
         @Override
         public void onChildViewAttachedToWindow(@NonNull View view) {
-            if (onItemClickListener != null){
+            if (onItemClickListener != null) {
                 view.setOnClickListener(onClickListener);
             }
         }
@@ -31,15 +33,15 @@ public class ItemClickSupport {
         }
     };
 
-    private ItemClickSupport(RecyclerView view){
+    private ItemClickSupport(RecyclerView view) {
         recyclerView = view;
         recyclerView.setTag(R.id.item_click_support, this);
         recyclerView.addOnChildAttachStateChangeListener(attachStateChangeListener);
     }
 
-    static ItemClickSupport addTo(RecyclerView view){
+    public static ItemClickSupport addTo(RecyclerView view) {
         ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.item_click_support);
-        if (support == null){
+        if (support == null) {
             support = new ItemClickSupport(view);
         }
         return support;
@@ -53,16 +55,16 @@ public class ItemClickSupport {
         return support;
     }
 
-    void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         onItemClickListener = listener;
     }
 
-    private void detach(RecyclerView view){
+    private void detach(RecyclerView view) {
         view.removeOnChildAttachStateChangeListener(attachStateChangeListener);
         view.setTag(R.id.item_click_support, null);
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemCLicked(RecyclerView recyclerView, int position, View v);
     }
 }
