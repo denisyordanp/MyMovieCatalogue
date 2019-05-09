@@ -11,8 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.mymoviecatalogue.model.Movie;
 import com.example.mymoviecatalogue.model.MovieResults;
@@ -20,6 +21,7 @@ import com.example.mymoviecatalogue.presenter.ItemClickSupport;
 import com.example.mymoviecatalogue.adapter.ListMovieAdapter;
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.presenter.ClientAPI;
+import com.example.mymoviecatalogue.view.MainView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -28,14 +30,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieFragment extends Fragment {
+public class MovieFragment extends Fragment implements MainView {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TextView errorLoad;
+    private Button refresh;
 
     public static final String DEFAULT_LANGUAGE = "default_language";
     private ArrayList<Movie> movies = new ArrayList<>();
 
+    private String language;
     private final String LIST_STATE_KEY = "list_key";
     private final String LIST_DATA_KEY = "data_key";
     private Parcelable savedRecycleViewState;
@@ -54,8 +59,13 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         progressBar = view.findViewById(R.id.pb_movie);
+        errorLoad = view.findViewById(R.id.tv_movie_error);
+        refresh = view.findViewById(R.id.btn_movie_refresh);
         recyclerView = view.findViewById(R.id.rv_movie_list);
         recyclerView.setHasFixedSize(true);
+
+        assert getArguments() != null;
+        language = getArguments().getString(DEFAULT_LANGUAGE);
 
         if (savedInstanceState != null) {
 
@@ -65,15 +75,14 @@ public class MovieFragment extends Fragment {
 
         } else {
 
-            progressBar.setVisibility(ProgressBar.VISIBLE);
-            assert getArguments() != null;
-            String language = getArguments().getString(DEFAULT_LANGUAGE);
             displayData(language);
 
         }
     }
 
     public void displayData(String language) {
+
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         ClientAPI.GetDataService service = ClientAPI
                 .getClient()
@@ -86,20 +95,14 @@ public class MovieFragment extends Fragment {
             public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
 
                 if (response.body() != null) {
-
-                    progressBar.setVisibility(ProgressBar.GONE);
-                    movies.addAll(response.body().getResults());
-                    showRecyclerList(movies);
-
+                    onSuccess(response.body().getResults());
                 }
 
             }
 
             @Override
             public void onFailure(@NonNull Call<MovieResults> call, @NonNull Throwable t) {
-
-                progressBar.setVisibility(ProgressBar.GONE);
-                Toast.makeText(getContext(), "Failed load data", Toast.LENGTH_SHORT).show();
+                onError();
             }
         });
 
@@ -148,6 +151,28 @@ public class MovieFragment extends Fragment {
         outState.putParcelableArrayList(LIST_DATA_KEY, movies);
         super.onSaveInstanceState(outState);
 
+    }
+
+    @Override
+    public void onError() {
+        progressBar.setVisibility(ProgressBar.GONE);
+        errorLoad.setVisibility(TextView.VISIBLE);
+        refresh.setVisibility(Button.VISIBLE);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorLoad.setVisibility(TextView.GONE);
+                refresh.setVisibility(Button.GONE);
+                displayData(language);
+            }
+        });
+    }
+
+    @Override
+    public void onSuccess(ArrayList<Movie> movie) {
+        progressBar.setVisibility(ProgressBar.GONE);
+        movies.addAll(movie);
+        showRecyclerList(movies);
     }
 
 }

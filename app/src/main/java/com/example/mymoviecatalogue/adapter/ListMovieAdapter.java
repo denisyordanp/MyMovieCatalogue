@@ -60,7 +60,12 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.Movi
             holder.tvJudul.setText(movies.get(position).getName());
         }
 
-        holder.tvDescription.setText(movies.get(position).getDescription());
+        if (!movies.get(position).getDescription().isEmpty()){
+            holder.tvDescription.setText(movies.get(position).getDescription());
+        }else {
+            holder.tvDescription.setText(context.getResources().getString(R.string.not_available));
+//            holder.tvDescription.setText("Tidak tersedia");
+        }
 
         CircularProgressDrawable progress = new CircularProgressDrawable(context);
         progress.setStrokeWidth(5f);

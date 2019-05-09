@@ -13,6 +13,12 @@
     <string name="language">Bahasa</string>
     <string name="tv_series">Serial TV</string>
     <string name="movies">Film</string>
-    <string name="english">english</string>
+    <string name="english">English</string>
+    <string name="failed_load_data">Gagal memuat data</string>
+    <string name="bahasa">Bahasa</string>
+    <string name="refresh">muat ulang</string>
+    <string name="choose_language">Pilih bahasa :</string>
+    <string name="see_more">Lihat lebih</string>
+    <string name="not_available">Kilasan tidak tersedia pada bahasa ini</string>
 
 </resources>

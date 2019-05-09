@@ -11,9 +11,14 @@
     <string name="detail_photo">Detail Photo</string>
     <string name="overview">Overview</string>
     <string name="language">Language</string>
-    <string name="english">english</string>
+    <string name="english">English</string>
     <string name="bahasa">Bahasa</string>
     <string name="movies">Movies</string>
     <string name="tv_series">TV Series</string>
+    <string name="failed_load_data">Failed load data</string>
+    <string name="refresh">Refresh</string>
+    <string name="choose_language">Choose language :</string>
+    <string name="see_more">See more</string>
+    <string name="not_available">Overview do not available on this language</string>
 
 </resources>

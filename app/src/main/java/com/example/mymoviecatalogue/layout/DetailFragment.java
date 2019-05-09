@@ -74,7 +74,13 @@ public class DetailFragment extends Fragment {
                 txtDetailTitle.setText(getArguments().getString(EXTRA_TITLE));
                 txtDetailRealese.setText(getArguments().getString(EXTRA_RELEASE));
             }
-            txtDetailDescription.setText(getArguments().getString(EXTRA_DESCRIPTION));
+
+            if (!Objects.requireNonNull(getArguments().getString(EXTRA_DESCRIPTION)).isEmpty()){
+                txtDetailDescription.setText(getArguments().getString(EXTRA_DESCRIPTION));
+            }else {
+                txtDetailDescription.setText(Objects.requireNonNull(getContext()).getResources().getString(R.string.not_available));
+            }
+
             txtDetailDirectors.setText(getArguments().getString(EXTRA_DIRECTORS));
 
             progress = new CircularProgressDrawable(Objects.requireNonNull(getContext()));
@@ -126,7 +132,13 @@ public class DetailFragment extends Fragment {
             txtDetailTitle.setText(movie.getTitle());
             txtDetailRealese.setText(movie.getRelease());
         }
-        txtDetailDescription.setText(movie.getDescription());
+
+        if (!movie.getDescription().isEmpty()){
+            txtDetailDescription.setText(movie.getDescription());
+        }else {
+            txtDetailDescription.setText(Objects.requireNonNull(getContext()).getResources().getString(R.string.not_available));
+        }
+
         txtDetailDirectors.setText(movie.getVote());
 
         Picasso.Builder builder = new Picasso.Builder(Objects.requireNonNull(getContext()));
