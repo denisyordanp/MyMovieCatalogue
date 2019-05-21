@@ -45,7 +45,8 @@ public class MovieFragment extends Fragment implements MainView {
     private final String LIST_DATA_KEY = "data_key";
     private Parcelable savedRecycleViewState;
 
-    public MovieFragment() {
+    public static MovieFragment newInstance() {
+        return new MovieFragment();
     }
 
     @Override
@@ -64,8 +65,9 @@ public class MovieFragment extends Fragment implements MainView {
         recyclerView = view.findViewById(R.id.rv_movie_list);
         recyclerView.setHasFixedSize(true);
 
-        assert getArguments() != null;
-        language = getArguments().getString(DEFAULT_LANGUAGE);
+//        assert getArguments() != null;
+//        language = getArguments().getString(DEFAULT_LANGUAGE);
+//        language = "en-US";
 
         if (savedInstanceState != null) {
 

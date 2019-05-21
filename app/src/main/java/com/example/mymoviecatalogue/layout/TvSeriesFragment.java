@@ -46,7 +46,8 @@ public class TvSeriesFragment extends Fragment implements MainView {
     private final String LIST_DATA_KEY = "data_key";
     private Parcelable savedRecycleViewState;
 
-    public TvSeriesFragment() {
+    public static TvSeriesFragment newInstance() {
+        return new TvSeriesFragment();
     }
 
     @Override
@@ -65,8 +66,10 @@ public class TvSeriesFragment extends Fragment implements MainView {
         recyclerView = view.findViewById(R.id.rv_tv_list);
         recyclerView.setHasFixedSize(true);
 
-        assert getArguments() != null;
-        language = getArguments().getString(DEFAULT_LANGUAGE);
+//        assert getArguments() != null;
+//        language = getArguments().getString(DEFAULT_LANGUAGE);
+
+        language = "en-US";
 
         if (savedInstanceState != null) {
 

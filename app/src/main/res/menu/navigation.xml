@@ -11,4 +11,9 @@
         android:icon="@drawable/baseline_movie_filter_black_18dp"
         android:title="@string/tv_series"/>
 
+    <item
+        android:id="@+id/navigation_favorite"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:title="@string/favorite"/>
+
 </menu>

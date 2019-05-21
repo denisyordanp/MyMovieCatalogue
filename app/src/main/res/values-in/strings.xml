@@ -20,5 +20,6 @@
     <string name="choose_language">Pilih bahasa :</string>
     <string name="see_more">Lihat lebih</string>
     <string name="not_available">Kilasan tidak tersedia pada bahasa ini</string>
+    <string name="favorite">Kesukaan</string>
 
 </resources>
