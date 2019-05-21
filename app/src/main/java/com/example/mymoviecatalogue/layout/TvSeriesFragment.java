@@ -20,6 +20,7 @@ import com.example.mymoviecatalogue.adapter.ListMovieAdapter;
 import com.example.mymoviecatalogue.model.Movie;
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.model.MovieResults;
+import com.example.mymoviecatalogue.presenter.CheckLanguage;
 import com.example.mymoviecatalogue.presenter.ClientAPI;
 import com.example.mymoviecatalogue.presenter.ItemClickSupport;
 import com.example.mymoviecatalogue.view.MainView;
@@ -38,7 +39,6 @@ public class TvSeriesFragment extends Fragment implements MainView {
     private TextView errorLoad;
     private Button refresh;
 
-    public static final String DEFAULT_LANGUAGE = "default_language";
     private ArrayList<Movie> movies = new ArrayList<>();
 
     private String language;
@@ -66,10 +66,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
         recyclerView = view.findViewById(R.id.rv_tv_list);
         recyclerView.setHasFixedSize(true);
 
-//        assert getArguments() != null;
-//        language = getArguments().getString(DEFAULT_LANGUAGE);
-
-        language = "en-US";
+        language = CheckLanguage.getLanguage(getContext());
 
         if (savedInstanceState != null) {
 

@@ -1,6 +1,8 @@
 package com.example.mymoviecatalogue.layout;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -9,18 +11,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.presenter.CheckLanguage;
+import com.example.mymoviecatalogue.pref.SettingPreference;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     int mode;
-    public String language;
     public static final String API_KEY = "daed568873f1017055f76a70f110e0fb";
     public static final String BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        language = CheckLanguage.getLanguage(this);
+        checkPref();
 
         viewPager = findViewById(R.id.view_pager);
         MenuPageAdapter adapter = new MenuPageAdapter(getSupportFragmentManager());
@@ -133,6 +136,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             return 3;
+        }
+    }
+
+    private void checkPref(){
+        SettingPreference settingPreference = new SettingPreference(this);
+        Locale myLocale;
+
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+
+        if (!settingPreference.getPrefLanguage().isEmpty()){
+
+            String language = settingPreference.getPrefLanguage().substring(0,2);
+            myLocale = new Locale(language);
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
         }
     }
 
