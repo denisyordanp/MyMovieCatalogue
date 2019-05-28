@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">My Movie Catalogue</string>
-
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="img_des">Photo Description</string>
@@ -20,6 +19,8 @@
     <string name="choose_language">Choose language :</string>
     <string name="see_more">See more</string>
     <string name="not_available">Overview do not available on this language</string>
-    <string name="favorite">Favorite</string>
+    <string name="favorite">Favorites</string>
+    <string name="no_favorite_data">No favorite data</string>
+    <string name="unfavorite">Unfavorite</string>
 
 </resources>

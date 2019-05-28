@@ -1,6 +1,7 @@
 package com.example.mymoviecatalogue.layout;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import com.example.mymoviecatalogue.R;
 
 public class FavoriteFragment extends Fragment {
 
+    private static String movies, tv;
+
     public static FavoriteFragment newInstance() {
         return new FavoriteFragment();
     }
@@ -32,6 +35,11 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Context context = getContext();
+        assert context != null;
+        movies = context.getResources().getString(R.string.movies);
+        tv = context.getResources().getString(R.string.tv_series);
 
         ViewPager viewPager = view.findViewById(R.id.vp_favorite);
         FavoritePageAdapter adapter = new FavoritePageAdapter(getChildFragmentManager());
@@ -53,10 +61,10 @@ public class FavoriteFragment extends Fragment {
 
             switch (i){
                 case 0:
-                    return MovieFragment.newInstance();
+                    return MovieFavoriteFragment.newInstance();
 
                 case 1:
-                    return TvSeriesFragment.newInstance();
+                    return TvFavoriteFragment.newInstance();
             }
 
             return null;
@@ -73,10 +81,10 @@ public class FavoriteFragment extends Fragment {
 
             switch (position){
                 case 0:
-                    return "Movie";
+                    return movies;
 
                 case 1:
-                    return "Tv Series";
+                    return tv;
 
             }
 

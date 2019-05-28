@@ -21,5 +21,7 @@
     <string name="see_more">Lihat lebih</string>
     <string name="not_available">Kilasan tidak tersedia pada bahasa ini</string>
     <string name="favorite">Kesukaan</string>
+    <string name="no_favorite_data">Belum ada kesukaan</string>
+    <string name="unfavorite">Tidak kesukaan</string>
 
 </resources>

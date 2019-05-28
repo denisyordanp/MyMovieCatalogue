@@ -23,7 +23,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    int mode;
     public static final String API_KEY = "daed568873f1017055f76a70f110e0fb";
     public static final String BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
                     viewPager.setCurrentItem(1);
                     initTitle(item.getTitle().toString());
+                    item.setTitle(R.string.tv_series);
 
                     return true;
 
@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
                     viewPager.setCurrentItem(2);
                     initTitle(item.getTitle().toString());
+                    item.setTitle(R.string.favorite);
 
                     return true;
 
             }
 
-            mode = item.getItemId();
             return false;
         }
     };
@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigationItemView = findViewById(R.id.navigation);
         navigationItemView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigationItemView.getMenu().getItem(0).setTitle(R.string.movies);
+        navigationItemView.getMenu().getItem(1).setTitle(R.string.tv_series);
+        navigationItemView.getMenu().getItem(2).setTitle(R.string.favorite);
 
         if (savedInstanceState == null) {
             navigationItemView.setSelectedItemId(R.id.navigation_movie);
@@ -89,12 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTitle(String title){
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("nav", mode);
     }
 
     @Override
@@ -155,5 +152,4 @@ public class MainActivity extends AppCompatActivity {
             res.updateConfiguration(conf, dm);
         }
     }
-
 }

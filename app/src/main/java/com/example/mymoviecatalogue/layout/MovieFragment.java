@@ -135,9 +135,11 @@ public class MovieFragment extends Fragment implements MainView {
         mMovie.setVote(movie.getVote());
         mMovie.setDescription(movie.getDescription());
         mMovie.setPoster(movie.getPoster());
+        mMovie.setId(movie.getId());
 
         Intent moveDetailMovie = new Intent(getActivity(), MovieDetailActivity.class);
         moveDetailMovie.putExtra(MovieDetailActivity.EXTRA_MOVIE, mMovie);
+        moveDetailMovie.putExtra(MovieDetailActivity.EXTRA_CATEGORY, true);
         moveDetailMovie.putParcelableArrayListExtra(MovieDetailActivity.EXTRA_ALL_MOVIE, movies);
         startActivity(moveDetailMovie);
 

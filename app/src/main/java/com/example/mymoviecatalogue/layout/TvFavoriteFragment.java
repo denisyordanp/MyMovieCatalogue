@@ -16,9 +16,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.adapter.ListMovieAdapter;
 import com.example.mymoviecatalogue.model.Movie;
-import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.model.MovieResults;
 import com.example.mymoviecatalogue.presenter.CheckLanguage;
 import com.example.mymoviecatalogue.presenter.ClientAPI;
@@ -32,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TvSeriesFragment extends Fragment implements MainView {
+public class TvFavoriteFragment extends Fragment implements MainView {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -46,24 +46,24 @@ public class TvSeriesFragment extends Fragment implements MainView {
     private final String LIST_DATA_KEY = "data_key";
     private Parcelable savedRecycleViewState;
 
-    public static TvSeriesFragment newInstance() {
-        return new TvSeriesFragment();
+    public static TvFavoriteFragment newInstance() {
+        return new TvFavoriteFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_tv_series, container, false);
+        return inflater.inflate(R.layout.fragment_tv_favorite, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar = view.findViewById(R.id.pb_tv);
-        errorLoad = view.findViewById(R.id.tv_tv_error);
-        refresh = view.findViewById(R.id.btn_tv_refresh);
-        recyclerView = view.findViewById(R.id.rv_tv_list);
+        progressBar = view.findViewById(R.id.pb_fav_tv);
+        errorLoad = view.findViewById(R.id.fav_tv_error);
+        refresh = view.findViewById(R.id.btn_fav_tv_refresh);
+        recyclerView = view.findViewById(R.id.rv_fav_tv_list);
         recyclerView.setHasFixedSize(true);
 
         language = CheckLanguage.getLanguage(getContext());
@@ -102,7 +102,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
 
             @Override
             public void onFailure(@NonNull Call<MovieResults> call, @NonNull Throwable t) {
-               onError();
+                onError();
             }
         });
 
@@ -135,7 +135,6 @@ public class TvSeriesFragment extends Fragment implements MainView {
         mMovie.setVote(movie.getVote());
         mMovie.setDescription(movie.getDescription());
         mMovie.setPoster(movie.getPoster());
-        mMovie.setId(movie.getId());
 
         Intent moveDetailMovie = new Intent(getActivity(), MovieDetailActivity.class);
         moveDetailMovie.putExtra(MovieDetailActivity.EXTRA_MOVIE, mMovie);
@@ -180,4 +179,5 @@ public class TvSeriesFragment extends Fragment implements MainView {
         showRecyclerList(movies);
 
     }
+
 }

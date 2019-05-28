@@ -11,6 +11,8 @@ public class Movie implements Parcelable {
     private String poster;
     @SerializedName("title")
     private String title;
+    @SerializedName("id")
+    private Integer id;
     @SerializedName("name")
     private String name;
     @SerializedName("overview")
@@ -22,14 +24,23 @@ public class Movie implements Parcelable {
     @SerializedName("first_air_date")
     private String airDate;
 
-    public Movie(String poster, String title, String description, String release, String vote, String name, String airDate) {
+    public Movie(String poster, Integer id, String title, String description, String release, String vote, String name, String airDate) {
         this.poster = poster;
         this.title = title;
+        this.id = id;
         this.description = description;
         this.release = release;
         this.vote = vote;
         this.name = name;
         this.airDate = airDate;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getRelease() {
@@ -100,6 +111,7 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.poster);
         dest.writeString(this.name);
+        dest.writeValue(this.id);
         dest.writeString(this.title);
         dest.writeString(this.description);
         dest.writeString(this.airDate);
@@ -110,6 +122,7 @@ public class Movie implements Parcelable {
     private Movie(Parcel in) {
         this.poster = in.readString();
         this.name = in.readString();
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.title = in.readString();
         this.description = in.readString();
         this.airDate = in.readString();

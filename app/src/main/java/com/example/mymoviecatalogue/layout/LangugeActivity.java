@@ -45,6 +45,7 @@ public class LangugeActivity extends AppCompatActivity {
                 Configuration conf = res.getConfiguration();
                 Locale myLocale;
                 Intent refresh = new Intent(LangugeActivity.this, MainActivity.class);
+                refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 switch (checkedId) {
                     case R.id.rb_en:
@@ -52,8 +53,6 @@ public class LangugeActivity extends AppCompatActivity {
                         conf.locale = myLocale;
                         res.updateConfiguration(conf, dm);
                         settingPreference.setPrefLanguage("en-US");
-                        finish();
-                        startActivity(refresh);
                         break;
 
                     case R.id.rb_in:
@@ -61,10 +60,12 @@ public class LangugeActivity extends AppCompatActivity {
                         conf.locale = myLocale;
                         res.updateConfiguration(conf, dm);
                         settingPreference.setPrefLanguage("id-ID");
-                        finish();
-                        startActivity(refresh);
                         break;
                 }
+
+//                MainActivity.mainActivity.finish();
+                finish();
+                startActivity(refresh);
             }
         });
     }
