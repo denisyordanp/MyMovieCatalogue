@@ -12,37 +12,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.database.EntityMovie;
 import com.example.mymoviecatalogue.layout.MainActivity;
 import com.example.mymoviecatalogue.layout.MovieDetailActivity;
 import com.example.mymoviecatalogue.model.MovieFavorite;
-import com.example.mymoviecatalogue.presenter.FavoriteAPI;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.MovieViewHolder>{
 
     private Context context;
     private ArrayList<MovieFavorite> aMovies = new ArrayList<>();
-    private String language;
-    private List<EntityMovie> movies;
 
-//    public FavoriteMovieAdapter(Context context, ArrayList<MovieFavorite> movies) {
-//        this.context = context;
-//        this.movies = movies;
-//    }
-
-    public FavoriteMovieAdapter(Context context, List<EntityMovie> movies, String language) {
+    public FavoriteMovieAdapter(Context context) {
         this.context = context;
-        this.movies = movies;
-        this.language = language;
+    }
+
+    public void setData(ArrayList<MovieFavorite> movie){
+        aMovies.clear();
+        aMovies.addAll(movie);
+        notifyDataSetChanged();
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
@@ -67,7 +57,6 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
                         MovieFavorite clickedDataItem = aMovies.get(pos);
                         Intent intent = new Intent(context, MovieDetailActivity.class);
                         intent.putExtra(MovieDetailActivity.EXTRA_FAVORITE, clickedDataItem);
-                        intent.putExtra(MovieDetailActivity.EXTRA_ENTITY, movies.get(pos));
                         context.startActivity(intent);
                     }
                 }
@@ -88,56 +77,33 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
 
-        FavoriteAPI.GetFavorite service = FavoriteAPI
-                .getFavorite()
-                .create(FavoriteAPI.GetFavorite.class);
+        holder.tvJudul.setText(aMovies.get(position).getTitle());
 
-        Call<MovieFavorite> call = service.getMovie(movies.get(position).getMovieid(), MainActivity.API_KEY, language);
-        call.enqueue(new Callback<MovieFavorite>() {
+        if (!aMovies.get(position).getOverview().isEmpty()){
+            holder.tvDescription.setText(aMovies.get(position).getOverview());
+        }else {
+            holder.tvDescription.setText(context.getResources().getString(R.string.not_available));
+        }
 
-            @Override
-            public void onResponse(@NonNull Call<MovieFavorite> call, @NonNull Response<MovieFavorite> response) {
+        CircularProgressDrawable progress = new CircularProgressDrawable(context);
+        progress.setStrokeWidth(5f);
+        progress.setCenterRadius(30f);
+        progress.start();
 
-                MovieFavorite movieFavorite = response.body();
-
-                if (movieFavorite != null){
-                    holder.tvJudul.setText(movieFavorite.getTitle());
-
-                    if (!movieFavorite.getOverview().isEmpty()){
-                        holder.tvDescription.setText(movieFavorite.getOverview());
-                    }else {
-                        holder.tvDescription.setText(context.getResources().getString(R.string.not_available));
-                    }
-
-                    CircularProgressDrawable progress = new CircularProgressDrawable(context);
-                    progress.setStrokeWidth(5f);
-                    progress.setCenterRadius(30f);
-                    progress.start();
-
-                    Picasso.Builder builder = new Picasso.Builder(context);
-                    builder.downloader(new OkHttp3Downloader(context));
-                    builder.build().load(MainActivity.BASE_URL + movieFavorite.getPosterPath())
-                            .placeholder(progress)
-                            .error(R.drawable.ic_error_black_24dp)
-                            .fit()
-                            .centerCrop()
-                            .into(holder.imgPhoto);
-
-                    aMovies.add(movieFavorite);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<MovieFavorite> call, @NonNull Throwable t) {
-
-            }
-        });
+        Picasso.Builder builder = new Picasso.Builder(context);
+        builder.downloader(new OkHttp3Downloader(context));
+        builder.build().load(MainActivity.BASE_URL + aMovies.get(position).getPosterPath())
+                .placeholder(progress)
+                .error(R.drawable.ic_error_black_24dp)
+                .fit()
+                .centerCrop()
+                .into(holder.imgPhoto);
 
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return aMovies.size();
     }
 
 }

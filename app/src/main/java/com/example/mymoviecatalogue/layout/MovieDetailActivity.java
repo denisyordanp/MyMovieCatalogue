@@ -16,10 +16,11 @@ import android.widget.TextView;
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.adapter.HorizontalListMovieAdapter;
 import com.example.mymoviecatalogue.database.DatabaseFunction;
-import com.example.mymoviecatalogue.database.EntityMovie;
+//import com.example.mymoviecatalogue.database.EntityMovie;
 import com.example.mymoviecatalogue.model.Movie;
 import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.example.mymoviecatalogue.presenter.ItemClickSupport;
+import com.example.mymoviecatalogue.view.MainViewModel;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -30,7 +31,6 @@ public class MovieDetailActivity extends AppCompatActivity{
 
     public static final String EXTRA_MOVIE = "extra_movie";
     public static final String EXTRA_ALL_MOVIE = "extra_all_movie";
-    public static final String EXTRA_ENTITY = "extra_entity";
     public static final String EXTRA_FAVORITE = "extra_favorite";
     public static final String EXTRA_CATEGORY = "extra_category";
 
@@ -40,9 +40,10 @@ public class MovieDetailActivity extends AppCompatActivity{
     private Menu menu;
 
     private Movie movie;
-    private EntityMovie entityMovie;
+//    private EntityMovie entityMovie;
     private MovieFavorite favorites;
     private DatabaseFunction function;
+    private MovieFavoriteFragment favoriteFragment;
     private boolean isMovie = true;
     private boolean isFavorite = false;
 
@@ -74,7 +75,7 @@ public class MovieDetailActivity extends AppCompatActivity{
         movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
         ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(EXTRA_ALL_MOVIE);
         isMovie = getIntent().getBooleanExtra(EXTRA_CATEGORY, true);
-        entityMovie = getIntent().getParcelableExtra(EXTRA_ENTITY);
+//        entityMovie = getIntent().getParcelableExtra(EXTRA_ENTITY);
         favorites = getIntent().getParcelableExtra(EXTRA_FAVORITE);
 
         function = new DatabaseFunction(this);
@@ -114,13 +115,15 @@ public class MovieDetailActivity extends AppCompatActivity{
             case R.id.opt_fav:
 
                 if (isFavorite){
-                    function.deleteFavorite(entityMovie);
-                    Intent refresh = new Intent(MovieDetailActivity.this, MainActivity.class);
-                    refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    finish();
-                    startActivity(refresh);
+                    function.deleteFavorite(favorites.getId());
+                    onBackPressed();
+//                    Intent refresh = new Intent(MovieDetailActivity.this, MainActivity.class);
+//                    refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    finish();
+//                    startActivity(refresh);
                 }else {
                     function.saveFavorite(movie, isMovie);
+//                    favoriteFragment.displayData();
                     thisFavorite();
                 }
                 break;

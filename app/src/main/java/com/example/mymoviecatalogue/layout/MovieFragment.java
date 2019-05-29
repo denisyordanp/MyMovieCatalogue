@@ -75,14 +75,21 @@ public class MovieFragment extends Fragment implements MainView {
 
         } else {
 
+            showLoading(true);
             displayData(language);
 
         }
     }
 
-    public void displayData(String language) {
+    private void showLoading(boolean state){
+        if (state){
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        }else {
+            progressBar.setVisibility(ProgressBar.GONE);
+        }
+    }
 
-        progressBar.setVisibility(ProgressBar.VISIBLE);
+    public void displayData(String language) {
 
         ClientAPI.GetDataService service = ClientAPI
                 .getClient()
@@ -157,7 +164,7 @@ public class MovieFragment extends Fragment implements MainView {
 
     @Override
     public void onError() {
-        progressBar.setVisibility(ProgressBar.GONE);
+        showLoading(false);
         errorLoad.setVisibility(TextView.VISIBLE);
         refresh.setVisibility(Button.VISIBLE);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +179,7 @@ public class MovieFragment extends Fragment implements MainView {
 
     @Override
     public void onSuccess(ArrayList<Movie> movie) {
-        progressBar.setVisibility(ProgressBar.GONE);
+        showLoading(false);
         movies.addAll(movie);
         showRecyclerList(movies);
     }

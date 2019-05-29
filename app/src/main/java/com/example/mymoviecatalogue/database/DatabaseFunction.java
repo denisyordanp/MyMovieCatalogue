@@ -53,7 +53,7 @@ public class DatabaseFunction {
 
     }
 
-    public void deleteFavorite(final EntityMovie entityMovie){
+    public void deleteFavorite(final int id){
 
         class DeleteFavorite extends AsyncTask<Void, Void, Void>{
 
@@ -63,7 +63,7 @@ public class DatabaseFunction {
                 DatabaseMovie.getInstance(context.getApplicationContext())
                         .getAppDatabase()
                         .movieDao()
-                        .delete(entityMovie);
+                        .delete(id);
                 return null;
             }
 

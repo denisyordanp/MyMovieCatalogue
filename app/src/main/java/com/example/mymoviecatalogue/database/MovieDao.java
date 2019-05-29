@@ -22,7 +22,7 @@ public interface MovieDao {
     @Delete
     void delete(EntityMovie entityMovie);
 
-//    @Query("DELETE FROM entitymovie WHERE id = :id")
-//    void delete(int id);
+    @Query("DELETE FROM entitymovie WHERE movieid = :id")
+    void delete(int id);
 
 }

@@ -1,5 +1,7 @@
 package com.example.mymoviecatalogue.layout;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -8,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +22,18 @@ import com.example.mymoviecatalogue.adapter.FavoriteMovieAdapter;
 import com.example.mymoviecatalogue.database.DatabaseMovie;
 import com.example.mymoviecatalogue.database.EntityMovie;
 import com.example.mymoviecatalogue.model.Movie;
+import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.example.mymoviecatalogue.presenter.CheckLanguage;
+import com.example.mymoviecatalogue.presenter.FavoriteAPI;
+import com.example.mymoviecatalogue.view.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MovieFavoriteFragment extends Fragment{
 
@@ -36,6 +46,11 @@ public class MovieFavoriteFragment extends Fragment{
     private String language;
     private final String LIST_STATE_KEY = "list_key";
     private final String LIST_DATA_KEY = "data_key";
+
+    private FavoriteMovieAdapter adapter;
+    private MainViewModel mainViewModel;
+
+    private ArrayList<MovieFavorite> movie = new ArrayList<>();
 
     public static MovieFavoriteFragment newInstance() {
         return new MovieFavoriteFragment();
@@ -54,14 +69,17 @@ public class MovieFavoriteFragment extends Fragment{
         progressBar = view.findViewById(R.id.pb_fav_movie);
         errorLoad = view.findViewById(R.id.fav_movie_error);
         recyclerView = view.findViewById(R.id.rv_fav_movie_list);
+
+        adapter = new FavoriteMovieAdapter(getContext());
+        adapter.notifyDataSetChanged();
+
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         errorLoad.setText(getContext().getResources().getString(R.string.no_favorite_data));
 
         language = CheckLanguage.getLanguage(getContext());
-
 
 //        if (savedInstanceState != null) {
 //
@@ -79,42 +97,132 @@ public class MovieFavoriteFragment extends Fragment{
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.getFavorite().observe(this, getDataFavorite);
+    }
+
+    private Observer<ArrayList<MovieFavorite>> getDataFavorite = new Observer<ArrayList<MovieFavorite>>() {
+        @Override
+        public void onChanged(@Nullable ArrayList<MovieFavorite> movieFavorites) {
+            if (movieFavorites != null){
+                adapter.setData(movieFavorites);
+                progressBar.setVisibility(ProgressBar.GONE);
+            }
+        }
+    };
+
     public void displayData() {
 
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
-        class GetFavorite extends AsyncTask<Void, Void, List<EntityMovie>>{
+//        final ArrayList<MovieFavorite> movie = new ArrayList<>();
+
+        class GetFavorite extends AsyncTask<Void, Void, ArrayList<MovieFavorite>>{
 
             @Override
-            protected List<EntityMovie> doInBackground(Void... voids) {
+            protected ArrayList<MovieFavorite> doInBackground(Void... voids) {
 
-                List<EntityMovie> arrayList = DatabaseMovie
+                List<EntityMovie> entity = DatabaseMovie
                         .getInstance(getContext())
                         .getAppDatabase()
                         .movieDao()
                         .getAll();
 
-                return arrayList;
+                mainViewModel.setFavorite(language, entity);
+
+//                for (int i = 0; i < entity.size(); i++){
+//
+//                    FavoriteAPI.GetFavorite service = FavoriteAPI
+//                            .getFavorite()
+//                            .create(FavoriteAPI.GetFavorite.class);
+//
+//                    Call<MovieFavorite> call = service.getMovie(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
+//                    call.enqueue(new Callback<MovieFavorite>() {
+//
+//                        @Override
+//                        public void onResponse(@NonNull Call<MovieFavorite> call, @NonNull Response<MovieFavorite> response) {
+//
+//                            MovieFavorite movieFavorite = response.body();
+//
+//                            if (movieFavorite != null){
+//
+////                                Log.d("FavRespon", movieFavorite.getTitle());
+////
+////                                movie.add(movieFavorite);
+////
+////                                if (!movie.isEmpty()){
+////                                    Log.d("FavRespon", "adaan");
+////                                }
+//
+////                                data(movieFavorite);
+//
+//                                adapter.setData(movieFavorite);
+//
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(@NonNull Call<MovieFavorite> call, @NonNull Throwable t) {
+//
+//                        }
+//                    });
+//
+//                }
+//
+////                if (!movie.isEmpty()){
+////                    Log.d("FavBackground", "adaan");
+////                }else {
+////                    Log.d("FavBackground", "kosong");
+////                }
+
+
+                return null;
             }
 
             @Override
-            protected void onPostExecute(List<EntityMovie> entityMovies) {
-                super.onPostExecute(entityMovies);
+            protected void onPostExecute(ArrayList<MovieFavorite> movieFavorites) {
+                super.onPostExecute(movieFavorites);
 
-                if (!entityMovies.isEmpty()){
+                progressBar.setVisibility(ProgressBar.GONE);
 
-                    for (int i = 0; i < entityMovies.size(); i++){
+//                if (movieFavorites != null){
+//
+//                    for (int i =0; i<movieFavorites.size();i++){
+//                        Log.d("Fav", "adaan");
+//                    }
+////                    Log.d("Fav", "adaan");
+////
+////                    Log.d("isi", movieFavorites.get(0).getTitle());
+////
+////                    adapter.setData(movieFavorites);
+//
+//                }else {
+//                    Log.d("Fav", "kosong");
+//                }
 
-                        if (!entityMovies.get(i).isCategory()){
-                            entityMovies.remove(i);
-                        }
+//                ArrayList<MovieFavorite> movie = new ArrayList<>();
 
-                    }
-
-                    showRecyclerList(entityMovies);
-                }else {
-                    errorLoad.setVisibility(TextView.VISIBLE);
-                }
+//                if (!entityMovies.isEmpty()){
+//
+//                    for (int i = 0; i < entityMovies.size(); i++){
+//
+//                        if (!entityMovies.get(i).isCategory()){
+//                            entityMovies.remove(i);
+//                        }
+//
+//
+//
+//
+//                    }
+//
+//                    showRecyclerList(entityMovies);
+//                }else {
+//                    errorLoad.setVisibility(TextView.VISIBLE);
+//                }
             }
         }
 
@@ -123,9 +231,18 @@ public class MovieFavoriteFragment extends Fragment{
 
     }
 
+    private void data(MovieFavorite moviess){
+        movie.add(moviess);
+
+        if (!movie.isEmpty()){
+            Log.d("Fav", movie.get(1).getTitle());
+        }
+
+    }
+
     private void showRecyclerList(final List<EntityMovie> movieFavorite) {
 
-        FavoriteMovieAdapter adapter = new FavoriteMovieAdapter(getContext(), movieFavorite, language);
+//        FavoriteMovieAdapter adapter = new FavoriteMovieAdapter(getContext(), movieFavorite, language);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
