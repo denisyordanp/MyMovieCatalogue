@@ -24,9 +24,11 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
     private Context context;
     private ArrayList<MovieFavorite> aMovies = new ArrayList<>();
+    private boolean isMovie;
 
-    public FavoriteMovieAdapter(Context context) {
+    public FavoriteMovieAdapter(Context context, boolean isMovie) {
         this.context = context;
+        this.isMovie = isMovie;
     }
 
     public void setData(ArrayList<MovieFavorite> movie){
@@ -77,7 +79,12 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
 
-        holder.tvJudul.setText(aMovies.get(position).getTitle());
+        if (isMovie){
+            holder.tvJudul.setText(aMovies.get(position).getTitle());
+        }else {
+            holder.tvJudul.setText(aMovies.get(position).getName());
+        }
+
 
         if (!aMovies.get(position).getOverview().isEmpty()){
             holder.tvDescription.setText(aMovies.get(position).getOverview());

@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         android:layout_gravity="bottom"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation"
+        app:layout_behavior="android.support.design.behavior.HideBottomViewOnScrollBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

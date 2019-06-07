@@ -21,9 +21,7 @@ public class SettingPreference {
     }
 
     public String getPrefLanguage(){
-
         return preferences.getString(PREF_LANGUAGE, "");
-
     }
 
 }

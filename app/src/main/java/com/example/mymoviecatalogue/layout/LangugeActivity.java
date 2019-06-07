@@ -63,7 +63,6 @@ public class LangugeActivity extends AppCompatActivity {
                         break;
                 }
 
-//                MainActivity.mainActivity.finish();
                 finish();
                 startActivity(refresh);
             }

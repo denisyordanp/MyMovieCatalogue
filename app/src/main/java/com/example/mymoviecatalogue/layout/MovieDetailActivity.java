@@ -1,6 +1,7 @@
 package com.example.mymoviecatalogue.layout;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,19 +13,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.adapter.HorizontalListMovieAdapter;
-import com.example.mymoviecatalogue.database.DatabaseFunction;
-//import com.example.mymoviecatalogue.database.EntityMovie;
+import com.example.mymoviecatalogue.database.AppDatabase;
+import com.example.mymoviecatalogue.database.FavoriteEntry;
 import com.example.mymoviecatalogue.model.Movie;
 import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.example.mymoviecatalogue.presenter.ItemClickSupport;
-import com.example.mymoviecatalogue.view.MainViewModel;
+import com.example.mymoviecatalogue.view.AppExecutors;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MovieDetailActivity extends AppCompatActivity{
@@ -40,12 +43,11 @@ public class MovieDetailActivity extends AppCompatActivity{
     private Menu menu;
 
     private Movie movie;
-//    private EntityMovie entityMovie;
     private MovieFavorite favorites;
-    private DatabaseFunction function;
-    private MovieFavoriteFragment favoriteFragment;
     private boolean isMovie = true;
     private boolean isFavorite = false;
+
+    private AppDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +74,12 @@ public class MovieDetailActivity extends AppCompatActivity{
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
+        mDb = AppDatabase.getInstance(getApplicationContext());
+
         movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
         ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(EXTRA_ALL_MOVIE);
         isMovie = getIntent().getBooleanExtra(EXTRA_CATEGORY, true);
-//        entityMovie = getIntent().getParcelableExtra(EXTRA_ENTITY);
         favorites = getIntent().getParcelableExtra(EXTRA_FAVORITE);
-
-        function = new DatabaseFunction(this);
 
         if (movies != null && movie != null){
             showMovie(movie);
@@ -96,11 +97,13 @@ public class MovieDetailActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.favorite_menu, menu);
 
         if (isFavorite){
-            function.checkFavorite(favorites.getId(),menu);
+            checkFavorite(favorites.getId());
         } else {
-            function.checkFavorite(movie.getId(),menu);
+            checkFavorite(movie.getId());
         }
+
         this.menu = menu;
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -115,25 +118,72 @@ public class MovieDetailActivity extends AppCompatActivity{
             case R.id.opt_fav:
 
                 if (isFavorite){
-                    function.deleteFavorite(favorites.getId());
+                    deleteFavorite(favorites.getId());
                     onBackPressed();
-//                    Intent refresh = new Intent(MovieDetailActivity.this, MainActivity.class);
-//                    refresh.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    finish();
-//                    startActivity(refresh);
                 }else {
-                    function.saveFavorite(movie, isMovie);
-//                    favoriteFragment.displayData();
-                    thisFavorite();
+                    saveFavorite();
+                    setMenuFavorite(true);
                 }
+
                 break;
         }
 
         return true;
     }
 
-    private void thisFavorite(){
-        menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_full_24dp));
+    private void saveFavorite(){
+        final FavoriteEntry favoriteEntry = new FavoriteEntry(movie.getId(), isMovie);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.favoriteDao().insertFavorite(favoriteEntry);
+            }
+        });
+
+        Toast.makeText(this, getResources().getString(R.string.favorite), Toast.LENGTH_SHORT).show();
+    }
+
+    private void deleteFavorite(final int id){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.favoriteDao().deleteFavoriteWithId(id);
+            }
+        });
+
+        Toast.makeText(this, getResources().getString(R.string.unfavorite), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void checkFavorite(final int id){
+
+        new AsyncTask<Void, Void, List<FavoriteEntry>>(){
+
+            @Override
+            protected List<FavoriteEntry> doInBackground(Void... voids) {
+                return mDb.favoriteDao().loadFavoriteById(id);
+            }
+
+            @Override
+            protected void onPostExecute(List<FavoriteEntry> favoriteEntries) {
+                super.onPostExecute(favoriteEntries);
+                if (!favoriteEntries.isEmpty()){
+                    setMenuFavorite(true);
+                }else {
+                    setMenuFavorite(false);
+                }
+            }
+        }.execute();
+
+    }
+
+    private void setMenuFavorite(boolean state){
+        if (state){
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_full_24dp));
+        }else {
+            menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_border_white_24dp));
+        }
     }
 
     private void showMovie(Movie sMovie) {

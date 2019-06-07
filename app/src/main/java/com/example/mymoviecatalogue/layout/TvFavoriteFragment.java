@@ -1,7 +1,8 @@
 package com.example.mymoviecatalogue.layout;
 
 
-import android.content.Intent;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -17,15 +18,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.adapter.ListMovieAdapter;
+import com.example.mymoviecatalogue.adapter.FavoriteMovieAdapter;
+import com.example.mymoviecatalogue.database.FavoriteEntry;
 import com.example.mymoviecatalogue.model.Movie;
-import com.example.mymoviecatalogue.model.MovieResults;
+import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.example.mymoviecatalogue.presenter.CheckLanguage;
-import com.example.mymoviecatalogue.presenter.ClientAPI;
-import com.example.mymoviecatalogue.presenter.ItemClickSupport;
+import com.example.mymoviecatalogue.presenter.FavoriteAPI;
 import com.example.mymoviecatalogue.view.MainView;
+import com.example.mymoviecatalogue.view.MainViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -39,11 +42,15 @@ public class TvFavoriteFragment extends Fragment implements MainView {
     private TextView errorLoad;
     private Button refresh;
 
-    private ArrayList<Movie> movies = new ArrayList<>();
-
     private String language;
     private final String LIST_STATE_KEY = "list_key";
     private final String LIST_DATA_KEY = "data_key";
+
+    private FavoriteMovieAdapter adapter;
+    private boolean isError;
+
+    private ArrayList<MovieFavorite> favorites = new ArrayList<>();
+
     private Parcelable savedRecycleViewState;
 
     public static TvFavoriteFragment newInstance() {
@@ -60,87 +67,99 @@ public class TvFavoriteFragment extends Fragment implements MainView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (savedInstanceState != null){
+            favorites = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY);
+            savedRecycleViewState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+        }
+
         progressBar = view.findViewById(R.id.pb_fav_tv);
         errorLoad = view.findViewById(R.id.fav_tv_error);
-        refresh = view.findViewById(R.id.btn_fav_tv_refresh);
         recyclerView = view.findViewById(R.id.rv_fav_tv_list);
+        refresh = view.findViewById(R.id.btn_fav_tv_refresh);
+
+        adapter = new FavoriteMovieAdapter(getContext(), false);
+        adapter.notifyDataSetChanged();
+
         recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        errorLoad.setText(Objects.requireNonNull(getContext()).getResources().getString(R.string.no_favorite_data));
 
         language = CheckLanguage.getLanguage(getContext());
 
-        if (savedInstanceState != null) {
+    }
 
-            movies = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY);
-            savedRecycleViewState = savedInstanceState.getParcelable(LIST_STATE_KEY);
-            showRecyclerList(movies);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        } else {
-            displayData(language);
+        if (favorites != null && savedRecycleViewState != null){
+            Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(savedRecycleViewState);
+            adapter.setData(favorites);
+        }else {
+            displayFavorite();
         }
 
     }
 
-    public void displayData(String language) {
+    private void displayFavorite(){
 
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-
-        ClientAPI.GetDataService service = ClientAPI
-                .getClient()
-                .create(ClientAPI.GetDataService.class);
-
-        Call<MovieResults> call = service.getTv(MainActivity.API_KEY, language);
-        call.enqueue(new Callback<MovieResults>() {
-
+        showLoading(true);
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.getFavorite().observe(this, new Observer<List<FavoriteEntry>>() {
             @Override
-            public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
+            public void onChanged(@Nullable List<FavoriteEntry> aEntity) {
 
-                if (response.body() != null) {
-                    onSuccess(response.body().getResults());
+                if (aEntity != null){
+
+                    List<FavoriteEntry> entity = thisMovie(aEntity);
+                    favorites.clear();
+
+                    for (int i = 0; i < entity.size(); i++){
+
+                        isError = false;
+
+                        FavoriteAPI.GetFavorite service = FavoriteAPI
+                                .getFavorite()
+                                .create(FavoriteAPI.GetFavorite.class);
+
+                        Call<MovieFavorite> call = service.getTv(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
+                        call.enqueue(new Callback<MovieFavorite>() {
+
+                            @Override
+                            public void onResponse(@NonNull Call<MovieFavorite> call, @NonNull Response<MovieFavorite> response) {
+
+                                MovieFavorite movieFavorite = response.body();
+
+                                if (movieFavorite != null){
+
+                                    favorites.add(movieFavorite);
+                                    adapter.setData(favorites);
+
+                                    onSuccess(null);
+
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<MovieFavorite> call, @NonNull Throwable t) {
+                                onError();
+                                isError = true;
+                            }
+                        });
+
+                        if (isError){
+                            break;
+                        }
+                    }
+
+                }else {
+                    showLoading(false);
                 }
 
             }
-
-            @Override
-            public void onFailure(@NonNull Call<MovieResults> call, @NonNull Throwable t) {
-                onError();
-            }
         });
-
-    }
-
-    private void showRecyclerList(final ArrayList<Movie> mMovies) {
-
-        ListMovieAdapter adapter = new ListMovieAdapter(getContext(), mMovies);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        if (savedRecycleViewState != null) {
-            Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(savedRecycleViewState);
-        }
-
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemCLicked(RecyclerView recyclerView, int position, View v) {
-                showSelectedMovie(mMovies.get(position));
-            }
-        });
-    }
-
-    private void showSelectedMovie(Movie movie) {
-
-        Movie mMovie = new Movie();
-        mMovie.setName(movie.getName());
-        mMovie.setAirDate(movie.getAirDate());
-        mMovie.setVote(movie.getVote());
-        mMovie.setDescription(movie.getDescription());
-        mMovie.setPoster(movie.getPoster());
-
-        Intent moveDetailMovie = new Intent(getActivity(), MovieDetailActivity.class);
-        moveDetailMovie.putExtra(MovieDetailActivity.EXTRA_MOVIE, mMovie);
-        moveDetailMovie.putExtra(MovieDetailActivity.EXTRA_CATEGORY, false);
-        moveDetailMovie.putParcelableArrayListExtra(MovieDetailActivity.EXTRA_ALL_MOVIE, movies);
-        startActivity(moveDetailMovie);
 
     }
 
@@ -149,15 +168,14 @@ public class TvFavoriteFragment extends Fragment implements MainView {
 
         Parcelable state = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
         outState.putParcelable(LIST_STATE_KEY, state);
-        outState.putParcelableArrayList(LIST_DATA_KEY, movies);
+        outState.putParcelableArrayList(LIST_DATA_KEY, favorites);
         super.onSaveInstanceState(outState);
 
     }
 
     @Override
     public void onError() {
-
-        progressBar.setVisibility(ProgressBar.GONE);
+        showLoading(false);
         errorLoad.setVisibility(TextView.VISIBLE);
         refresh.setVisibility(Button.VISIBLE);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -165,19 +183,33 @@ public class TvFavoriteFragment extends Fragment implements MainView {
             public void onClick(View v) {
                 errorLoad.setVisibility(TextView.GONE);
                 refresh.setVisibility(Button.GONE);
-                displayData(language);
+                displayFavorite();
             }
         });
-
     }
 
     @Override
     public void onSuccess(ArrayList<Movie> movie) {
+        showLoading(false);
+    }
 
-        progressBar.setVisibility(ProgressBar.GONE);
-        movies.addAll(movie);
-        showRecyclerList(movies);
+    private void showLoading(boolean state){
+        if (state){
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        }else {
+            progressBar.setVisibility(ProgressBar.GONE);
+        }
+    }
 
+    private List<FavoriteEntry> thisMovie(List<FavoriteEntry> entity){
+
+        for (int i = 0; i < entity.size(); i++){
+            if (entity.get(i).isCategory()){
+                entity.remove(entity.get(i));
+            }
+        }
+
+        return entity;
     }
 
 }
