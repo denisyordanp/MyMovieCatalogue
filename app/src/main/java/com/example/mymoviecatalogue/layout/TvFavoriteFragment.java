@@ -20,11 +20,9 @@ import android.widget.TextView;
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.adapter.FavoriteMovieAdapter;
 import com.example.mymoviecatalogue.database.FavoriteEntry;
-import com.example.mymoviecatalogue.model.Movie;
 import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.example.mymoviecatalogue.presenter.CheckLanguage;
 import com.example.mymoviecatalogue.presenter.FavoriteAPI;
-import com.example.mymoviecatalogue.view.MainView;
 import com.example.mymoviecatalogue.view.MainViewModel;
 
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TvFavoriteFragment extends Fragment implements MainView {
+public class TvFavoriteFragment extends Fragment{
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -44,7 +42,6 @@ public class TvFavoriteFragment extends Fragment implements MainView {
 
     private String language;
     private final String LIST_STATE_KEY = "list_key";
-    private final String LIST_DATA_KEY = "data_key";
 
     private FavoriteMovieAdapter adapter;
     private boolean isError;
@@ -68,7 +65,6 @@ public class TvFavoriteFragment extends Fragment implements MainView {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState != null){
-            favorites = savedInstanceState.getParcelableArrayList(LIST_DATA_KEY);
             savedRecycleViewState = savedInstanceState.getParcelable(LIST_STATE_KEY);
         }
 
@@ -94,70 +90,83 @@ public class TvFavoriteFragment extends Fragment implements MainView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (favorites != null && savedRecycleViewState != null){
+        if (savedRecycleViewState != null){
             Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(savedRecycleViewState);
-            adapter.setData(favorites);
-        }else {
-            displayFavorite();
         }
+
+        displayFavorite();
 
     }
 
     private void displayFavorite(){
 
-        showLoading(true);
         MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.getFavorite().observe(this, new Observer<List<FavoriteEntry>>() {
             @Override
             public void onChanged(@Nullable List<FavoriteEntry> aEntity) {
 
+                showLoading(true);
+
+                if (favorites != null){
+                    favorites.clear();
+                }
+
                 if (aEntity != null){
 
                     List<FavoriteEntry> entity = thisMovie(aEntity);
-                    favorites.clear();
 
-                    for (int i = 0; i < entity.size(); i++){
+                    if (entity.isEmpty()){
 
-                        isError = false;
+                        adapter.setData(favorites);
+                        onError(true);
 
-                        FavoriteAPI.GetFavorite service = FavoriteAPI
-                                .getFavorite()
-                                .create(FavoriteAPI.GetFavorite.class);
+                    }else {
 
-                        Call<MovieFavorite> call = service.getTv(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
-                        call.enqueue(new Callback<MovieFavorite>() {
+                        onError(false);
+                        showLoading(true);
 
-                            @Override
-                            public void onResponse(@NonNull Call<MovieFavorite> call, @NonNull Response<MovieFavorite> response) {
+                        for (int i = 0; i < entity.size(); i++){
 
-                                MovieFavorite movieFavorite = response.body();
+                            isError = false;
 
-                                if (movieFavorite != null){
+                            FavoriteAPI.GetFavorite service = FavoriteAPI
+                                    .getFavorite()
+                                    .create(FavoriteAPI.GetFavorite.class);
 
-                                    favorites.add(movieFavorite);
-                                    adapter.setData(favorites);
+                            Call<MovieFavorite> call = service.getTv(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
+                            call.enqueue(new Callback<MovieFavorite>() {
 
-                                    onSuccess(null);
+                                @Override
+                                public void onResponse(@NonNull Call<MovieFavorite> call, @NonNull Response<MovieFavorite> response) {
 
+                                    MovieFavorite movieFavorite = response.body();
+
+                                    if (movieFavorite != null){
+
+                                        favorites.add(movieFavorite);
+                                        adapter.setData(favorites);
+
+                                        showLoading(false);
+
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(@NonNull Call<MovieFavorite> call, @NonNull Throwable t) {
-                                onError();
-                                isError = true;
-                            }
-                        });
+                                @Override
+                                public void onFailure(@NonNull Call<MovieFavorite> call, @NonNull Throwable t) {
+                                    onError(true);
+                                    isError = true;
+                                }
+                            });
 
-                        if (isError){
-                            break;
+                            if (isError){
+                                break;
+                            }
                         }
                     }
 
                 }else {
-                    showLoading(false);
+                    onError(true);
                 }
-
             }
         });
 
@@ -168,16 +177,20 @@ public class TvFavoriteFragment extends Fragment implements MainView {
 
         Parcelable state = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
         outState.putParcelable(LIST_STATE_KEY, state);
-        outState.putParcelableArrayList(LIST_DATA_KEY, favorites);
         super.onSaveInstanceState(outState);
 
     }
 
-    @Override
-    public void onError() {
+    private void onError(boolean state){
         showLoading(false);
-        errorLoad.setVisibility(TextView.VISIBLE);
-        refresh.setVisibility(Button.VISIBLE);
+        if (state){
+            errorLoad.setVisibility(TextView.VISIBLE);
+            refresh.setVisibility(Button.VISIBLE);
+        }else {
+            errorLoad.setVisibility(TextView.GONE);
+            refresh.setVisibility(Button.GONE);
+        }
+
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,11 +199,6 @@ public class TvFavoriteFragment extends Fragment implements MainView {
                 displayFavorite();
             }
         });
-    }
-
-    @Override
-    public void onSuccess(ArrayList<Movie> movie) {
-        showLoading(false);
     }
 
     private void showLoading(boolean state){
