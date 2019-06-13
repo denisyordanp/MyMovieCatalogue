@@ -1,6 +1,5 @@
 package com.example.mymoviecatalogue.layout;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.mymoviecatalogue.R;
@@ -27,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = "https://image.tmdb.org/t/p/w500";
 
     private ViewPager viewPager;
+    private String actTitle;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -38,23 +37,24 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_movie:
 
                     viewPager.setCurrentItem(0);
-                    initTitle(item.getTitle().toString());
+                    actTitle = item.getTitle().toString();
+                    initTitle();
 
                     return true;
 
                 case R.id.navigation_tv_series:
 
                     viewPager.setCurrentItem(1);
-                    initTitle(item.getTitle().toString());
-                    item.setTitle(R.string.tv_series);
+                    actTitle = item.getTitle().toString();
+                    initTitle();
 
                     return true;
 
                 case R.id.navigation_favorite:
 
                     viewPager.setCurrentItem(2);
-                    initTitle(item.getTitle().toString());
-                    item.setTitle(R.string.favorite);
+                    actTitle = item.getTitle().toString();
+                    initTitle();
 
                     return true;
 
@@ -88,25 +88,6 @@ public class MainActivity extends AppCompatActivity {
             navigationItemView.setSelectedItemId(savedInstanceState.getInt("nav"));
         }
 
-    }
-
-    private void initTitle(String title){
-        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.opt_language) {
-            Intent intent = new Intent(MainActivity.this, LangugeActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private static class MenuPageAdapter extends FragmentPagerAdapter{
@@ -152,4 +133,9 @@ public class MainActivity extends AppCompatActivity {
             res.updateConfiguration(conf, dm);
         }
     }
+
+    private void initTitle() {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(actTitle);
+    }
+
 }

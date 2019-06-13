@@ -1,6 +1,5 @@
 package com.example.mymoviecatalogue.layout;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -9,7 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,6 +38,7 @@ import retrofit2.Response;
 public class TvSeriesFragment extends Fragment implements MainView {
 
     private RecyclerView recyclerView;
+    private ListMovieAdapter adapter;
     private ProgressBar progressBar;
     private TextView errorLoad;
     private Button refresh;
@@ -60,13 +64,21 @@ public class TvSeriesFragment extends Fragment implements MainView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         progressBar = view.findViewById(R.id.pb_tv);
         errorLoad = view.findViewById(R.id.tv_tv_error);
         refresh = view.findViewById(R.id.btn_tv_refresh);
         recyclerView = view.findViewById(R.id.rv_tv_list);
-        recyclerView.setHasFixedSize(true);
 
         language = CheckLanguage.getLanguage(getContext());
+
+        adapter = new ListMovieAdapter(getContext());
+        adapter.notifyDataSetChanged();
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (savedInstanceState != null) {
 
@@ -80,10 +92,91 @@ public class TvSeriesFragment extends Fragment implements MainView {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_menu, menu);
+
+        SearchView searchView = (SearchView) (menu.findItem(R.id.search).getActionView());
+        searchView.setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.movies));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                displaySearch(query);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.opt_language) {
+            Intent intent = new Intent(getContext(), LangugeActivity.class);
+            startActivity(intent);
+        }
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                displayData(language);
+                return true;
+            }
+        });
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showLoading(boolean state) {
+        if (state) {
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+        } else {
+            progressBar.setVisibility(ProgressBar.GONE);
+        }
+    }
+
+    private void displaySearch(String query) {
+
+        showLoading(true);
+        ClientAPI.GetSearch service = ClientAPI
+                .getClient()
+                .create(ClientAPI.GetSearch.class);
+
+        Call<MovieResults> call = service.getTv(MainActivity.API_KEY, language, query);
+        call.enqueue(new Callback<MovieResults>() {
+
+            @Override
+            public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
+
+                if (response.body() != null) {
+                    onSuccess(response.body().getResults());
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MovieResults> call, @NonNull Throwable t) {
+                onError();
+            }
+        });
+
+    }
+
     public void displayData(String language) {
 
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-
+        showLoading(true);
         ClientAPI.GetDataService service = ClientAPI
                 .getClient()
                 .create(ClientAPI.GetDataService.class);
@@ -102,7 +195,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
 
             @Override
             public void onFailure(@NonNull Call<MovieResults> call, @NonNull Throwable t) {
-               onError();
+                onError();
             }
         });
 
@@ -110,10 +203,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
 
     private void showRecyclerList(final ArrayList<Movie> mMovies) {
 
-        ListMovieAdapter adapter = new ListMovieAdapter(getContext(), mMovies);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        adapter.setData(mMovies);
 
         if (savedRecycleViewState != null) {
             Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(savedRecycleViewState);
@@ -125,6 +215,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
                 showSelectedMovie(mMovies.get(position));
             }
         });
+
     }
 
     private void showSelectedMovie(Movie movie) {
@@ -158,7 +249,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
     @Override
     public void onError() {
 
-        progressBar.setVisibility(ProgressBar.GONE);
+        showLoading(false);
         errorLoad.setVisibility(TextView.VISIBLE);
         refresh.setVisibility(Button.VISIBLE);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +266,12 @@ public class TvSeriesFragment extends Fragment implements MainView {
     @Override
     public void onSuccess(ArrayList<Movie> movie) {
 
-        progressBar.setVisibility(ProgressBar.GONE);
+        showLoading(false);
+
+        if (!movies.isEmpty()) {
+            movies.clear();
+        }
+
         movies.addAll(movie);
         showRecyclerList(movies);
 

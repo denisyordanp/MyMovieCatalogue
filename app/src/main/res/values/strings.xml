@@ -22,5 +22,6 @@
     <string name="favorite">Favorites</string>
     <string name="no_favorite_data">No favorite data</string>
     <string name="unfavorite">Unfavorite</string>
+    <string name="search">Search</string>
 
 </resources>

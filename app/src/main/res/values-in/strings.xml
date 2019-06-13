@@ -23,5 +23,7 @@
     <string name="favorite">Kesukaan</string>
     <string name="no_favorite_data">Belum ada kesukaan</string>
     <string name="unfavorite">Tidak kesukaan</string>
+    <string name="search">Cari</string>
+    <string name="app_name">Katalog Film Saya</string>
 
 </resources>

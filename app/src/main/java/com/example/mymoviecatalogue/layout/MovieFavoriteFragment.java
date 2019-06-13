@@ -21,7 +21,7 @@ import com.example.mymoviecatalogue.adapter.FavoriteMovieAdapter;
 import com.example.mymoviecatalogue.database.FavoriteEntry;
 import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.example.mymoviecatalogue.presenter.CheckLanguage;
-import com.example.mymoviecatalogue.presenter.FavoriteAPI;
+import com.example.mymoviecatalogue.presenter.ClientAPI;
 import com.example.mymoviecatalogue.view.MainViewModel;
 
 import java.util.ArrayList;
@@ -128,9 +128,9 @@ public class MovieFavoriteFragment extends Fragment{
 
                             isError = false;
 
-                            FavoriteAPI.GetFavorite service = FavoriteAPI
-                                    .getFavorite()
-                                    .create(FavoriteAPI.GetFavorite.class);
+                            ClientAPI.GetFavorite service = ClientAPI
+                                    .getClient()
+                                    .create(ClientAPI.GetFavorite.class);
 
                             Call<MovieFavorite> call = service.getMovie(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
                             call.enqueue(new Callback<MovieFavorite>() {

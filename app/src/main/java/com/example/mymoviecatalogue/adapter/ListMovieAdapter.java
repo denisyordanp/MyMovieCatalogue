@@ -21,11 +21,16 @@ import java.util.ArrayList;
 public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.MovieViewHolder> {
 
     private Context context;
-    private ArrayList<Movie> movies;
+    private ArrayList<Movie> movies = new ArrayList<>();
 
-    public ListMovieAdapter(Context context, ArrayList<Movie> movies) {
+    public ListMovieAdapter(Context context) {
         this.context = context;
-        this.movies = movies;
+    }
+
+    public void setData(ArrayList<Movie> mMovie) {
+        movies.clear();
+        movies.addAll(mMovie);
+        notifyDataSetChanged();
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {
