@@ -13,6 +13,9 @@ public interface FavoriteDao {
     @Query("SELECT * FROM favoritetable ORDER BY id ASC")
     LiveData<List<FavoriteEntry>> loadAllFavorite();
 
+    @Query("SELECT * FROM favoritetable ORDER BY id ASC")
+    List<FavoriteEntry> loadFavorite();
+
     @Insert
     void insertFavorite(FavoriteEntry favoriteEntry);
 

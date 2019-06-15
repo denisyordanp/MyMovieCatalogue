@@ -107,25 +107,25 @@ public class TvFavoriteFragment extends Fragment{
 
                 showLoading(true);
 
-                if (favorites != null){
+                if (favorites != null) {
                     favorites.clear();
                 }
 
-                if (aEntity != null){
+                if (aEntity != null) {
 
                     List<FavoriteEntry> entity = thisMovie(aEntity);
 
-                    if (entity.isEmpty()){
+                    if (entity.isEmpty()) {
 
                         adapter.setData(favorites);
                         onError(true);
 
-                    }else {
+                    } else {
 
                         onError(false);
                         showLoading(true);
 
-                        for (int i = 0; i < entity.size(); i++){
+                        for (int i = 0; i < entity.size(); i++) {
 
                             isError = false;
 
@@ -141,7 +141,7 @@ public class TvFavoriteFragment extends Fragment{
 
                                     MovieFavorite movieFavorite = response.body();
 
-                                    if (movieFavorite != null){
+                                    if (movieFavorite != null) {
 
                                         favorites.add(movieFavorite);
                                         adapter.setData(favorites);
@@ -158,18 +158,17 @@ public class TvFavoriteFragment extends Fragment{
                                 }
                             });
 
-                            if (isError){
+                            if (isError) {
                                 break;
                             }
                         }
                     }
 
-                }else {
+                } else {
                     onError(true);
                 }
             }
         });
-
     }
 
     @Override
