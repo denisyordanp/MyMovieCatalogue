@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String API_KEY = "daed568873f1017055f76a70f110e0fb";
     public static final String BASE_URL = "https://image.tmdb.org/t/p/w500";
+    public final static int NOTIFICATION_ID = 1001;
+    public final static String NOTIFICATION_CHANNEL_ID = "11001";
+    public final static String NOTIFICATION_CHANNEL_NAME = "11001";
 
     private ViewPager viewPager;
     private String actTitle;

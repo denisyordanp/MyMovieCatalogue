@@ -77,9 +77,10 @@ public class MovieDetailActivity extends AppCompatActivity{
         mDb = AppDatabase.getInstance(getApplicationContext());
 
         movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
-        ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(EXTRA_ALL_MOVIE);
         isMovie = getIntent().getBooleanExtra(EXTRA_CATEGORY, true);
         favorites = getIntent().getParcelableExtra(EXTRA_FAVORITE);
+
+        ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(EXTRA_ALL_MOVIE);
 
         if (movies != null && movie != null){
             showMovie(movie);

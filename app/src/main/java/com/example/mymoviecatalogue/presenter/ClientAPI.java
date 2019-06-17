@@ -52,4 +52,9 @@ public class ClientAPI {
         Call<MovieResults> getTv(@Query("api_key") String apiKey, @Query("language") String language, @Query("query") String query);
     }
 
+    public interface getUpcoming {
+        @GET("movie/upcoming")
+        Call<MovieResults> getMovie(@Query("api_key") String apiKey, @Query("language") String language, @Query("page") String page);
+    }
+
 }

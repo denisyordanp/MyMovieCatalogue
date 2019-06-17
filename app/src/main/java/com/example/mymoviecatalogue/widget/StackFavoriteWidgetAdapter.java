@@ -69,26 +69,6 @@ public class StackFavoriteWidgetAdapter implements RemoteViewsService.RemoteView
             Log.d("Widget-ondata", "adaan");
         }
 
-
-        new AsyncTask<Context, Void, List<FavoriteEntry>>() {
-            @Override
-            protected List<FavoriteEntry> doInBackground(Context... contexts) {
-                List<FavoriteEntry> favoriteEntries = null;
-                mDb.favoriteDao().loadFavorite();
-                return favoriteEntries;
-            }
-
-            @Override
-            protected void onPostExecute(List<FavoriteEntry> favoriteEntries) {
-                super.onPostExecute(favoriteEntries);
-
-                if (favoriteEntries != null) {
-                    Log.d("Widget-favorite", "adaan");
-                    entries.addAll(favoriteEntries);
-                }
-            }
-        }.execute(context);
-
 //        entries = mDb.favoriteDao().loadFavorite();
 
 //        AppExecutors.getInstance().networkIO().execute(new Runnable() {
@@ -159,7 +139,7 @@ public class StackFavoriteWidgetAdapter implements RemoteViewsService.RemoteView
     @Override
     public int getCount() {
         Log.d("Widget-getCount", "getCount");
-        return entries.size();
+        return movieFavoritesAll.size();
     }
 
     @Override

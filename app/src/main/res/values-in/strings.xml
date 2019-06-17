@@ -25,5 +25,15 @@
     <string name="unfavorite">Tidak kesukaan</string>
     <string name="search">Cari</string>
     <string name="app_name">Katalog Film Saya</string>
+    <string name="message_daily">Ayo lihat beberapa film bagus</string>
+    <string name="choose_reminder">Pilih pengingat :</string>
+    <string name="daily_reminder">Pengingat harian</string>
+    <string name="release_today_reminder">Pengingat rilis harian</string>
+    <string name="favorite_movie_widget">Widget Film Kesukaan</string>
+    <string name="daily_reminder_active">Pengingat harian aktif</string>
+    <string name="today_reminder_active">Pengingat rilis harian aktif</string>
+    <string name="today_reminder_deactive">Pengingat rilis harian nonaktif</string>
+    <string name="daily_reminder_deactive">Pengingat harian nonaktif</string>
+    <string name="message_today">Ayo lihat apa yang rilis hari ini</string>
 
 </resources>

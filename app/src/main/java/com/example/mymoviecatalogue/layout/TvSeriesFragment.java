@@ -87,6 +87,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
             showRecyclerList(movies);
 
         } else {
+            showLoading(true);
             displayData(language);
         }
 
@@ -103,6 +104,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
+                showLoading(true);
                 displaySearch(query);
 
                 return true;
@@ -149,7 +151,6 @@ public class TvSeriesFragment extends Fragment implements MainView {
 
     private void displaySearch(String query) {
 
-        showLoading(true);
         ClientAPI.GetSearch service = ClientAPI
                 .getClient()
                 .create(ClientAPI.GetSearch.class);
@@ -176,7 +177,6 @@ public class TvSeriesFragment extends Fragment implements MainView {
 
     public void displayData(String language) {
 
-        showLoading(true);
         ClientAPI.GetDataService service = ClientAPI
                 .getClient()
                 .create(ClientAPI.GetDataService.class);
@@ -255,6 +255,7 @@ public class TvSeriesFragment extends Fragment implements MainView {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showLoading(true);
                 errorLoad.setVisibility(TextView.GONE);
                 refresh.setVisibility(Button.GONE);
                 displayData(language);

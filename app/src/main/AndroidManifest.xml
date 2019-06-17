@@ -3,6 +3,8 @@
     package="com.example.mymoviecatalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -48,6 +50,11 @@
         <service
             android:name="com.example.mymoviecatalogue.widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name=".notification.MovieDailyReceiver"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
