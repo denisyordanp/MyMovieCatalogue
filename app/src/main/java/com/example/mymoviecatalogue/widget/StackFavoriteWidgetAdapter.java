@@ -1,167 +1,75 @@
 package com.example.mymoviecatalogue.widget;
 
-import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.database.AppDatabase;
-import com.example.mymoviecatalogue.database.FavoriteEntry;
+import com.example.mymoviecatalogue.database.MovieContract;
 import com.example.mymoviecatalogue.layout.MainActivity;
-import com.example.mymoviecatalogue.model.MovieFavorite;
-import com.example.mymoviecatalogue.presenter.CheckLanguage;
-import com.example.mymoviecatalogue.presenter.ClientAPI;
-import com.example.mymoviecatalogue.view.AppExecutors;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class StackFavoriteWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     private AppDatabase mDb;
-    private ArrayList<MovieFavorite> movieFavoritesAll = new ArrayList<>();
-    private ArrayList<MovieFavorite> mWidgetItems = new ArrayList<>();
-    private List<FavoriteEntry> entries;
+    private List<Bitmap> mWidgetItems = new ArrayList<>();
     private final Context context;
-    private String language;
+    private Cursor cursor;
+    private int mAppWIdgetId;
 
-    StackFavoriteWidgetAdapter(Context context) {
+    StackFavoriteWidgetAdapter(Context context, Intent intent) {
         this.context = context;
+        mAppWIdgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
-    private void setData(MovieFavorite favorite) {
-        movieFavoritesAll.add(favorite);
-        for (int i = 0; i < movieFavoritesAll.size(); i++) {
-            Log.d("Widget-array favorite", movieFavoritesAll.get(i).getTitle());
-        }
-    }
-
-    private void setDataEntity(List<FavoriteEntry> favorite) {
-        entries.addAll(favorite);
-        for (int i = 0; i < entries.size(); i++) {
-            Log.d("Widget-array favorite", Integer.toString(entries.get(i).getMovieid()));
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
     @Override
     public void onCreate() {
-        language = CheckLanguage.getLanguage(context);
         mDb = AppDatabase.getInstance(context);
-
-        if (movieFavoritesAll.isEmpty()) {
-            Log.d("Widget-ondata", "kosong");
-        } else {
-            Log.d("Widget-ondata", "adaan");
-        }
-
-//        entries = mDb.favoriteDao().loadFavorite();
-
-//        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                List<FavoriteEntry> entity = thisMovie(mDb.favoriteDao().loadFavorite());
-//
-//                if (!entity.isEmpty()){
-////                    favoriteEntries = entity;
-//                    setDataEntity(entity);
-//
-//                    for (int i = 0; i < entity.size(); i++){
-//
-//                        ClientAPI.GetFavorite service = ClientAPI
-//                                .getClient()
-//                                .create(ClientAPI.GetFavorite.class);
-//
-//                        Call<MovieFavorite> call = service.getMovie(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
-//                        call.enqueue(new Callback<MovieFavorite>() {
-//
-//                            ArrayList<MovieFavorite> movieFavoritesAll = new ArrayList<>();
-//
-//                            @Override
-//                            public void onResponse(@NonNull Call<MovieFavorite> call, @NonNull Response<MovieFavorite> response) {
-//
-//                                MovieFavorite movieFavorite = response.body();
-//
-//                                Log.d("Widget", "onRespon");
-//
-//                                if (movieFavorite != null){
-//
-//                                    setData(movieFavorite);
-//                                    onDataSetChanged();
-////                                    movieFavoritesAll.add(movieFavorite);
-////                                    Log.d("Widget", movieFavoritesAll.get(0).getTitle());
-//
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(@NonNull Call<MovieFavorite> call, @NonNull Throwable t) {
-//
-//                            }
-//                        });
-//                    }
-//                }else {
-//                    Log.d("Widget", "kosong");
-//                }
-//            }
-//        });
     }
 
     @Override
     public void onDataSetChanged() {
-//        if (entries.isEmpty()){
-//            Log.d("Widget-ondata", "kosong");
-//        }else {
-//            Log.d("Widget-ondata", "adaan");
-//        }
+
+        cursor = mDb.favoriteDao().loadFavoriteCursor();
+        Binder.clearCallingIdentity();
+
+        while (cursor.moveToNext()) {
+            Bitmap b;
+            try {
+                b = Picasso.with(context).load(MainActivity.BASE_URL + MovieContract.getColumnString(cursor, MovieContract.MovieColumns.POSTER)).get();
+                mWidgetItems.add(b);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void onDestroy() {
-
+        cursor.close();
     }
 
     @Override
     public int getCount() {
-        Log.d("Widget-getCount", "getCount");
-        return movieFavoritesAll.size();
+        return mWidgetItems.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
-        Log.d("Widget", "getView");
-
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
-//        rv.setImageViewBitmap(R.id.imageView, mWidgetItems.get(position));
-
-        Bitmap bmp = null;
-        try {
-            bmp = Glide.with(context)
-                    .asBitmap()
-                    .load(MainActivity.BASE_URL + movieFavoritesAll.get(position).getPosterPath())
-                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .get();
-            rv.setImageViewBitmap(R.id.imageView, bmp);
-            Log.d("Widget", "mashok");
-        } catch (InterruptedException | ExecutionException e) {
-            Log.d("Widget", "error");
-        }
+        rv.setImageViewBitmap(R.id.imageView, mWidgetItems.get(position));
 
         Bundle extras = new Bundle();
         extras.putInt(FavoriteMovieWidget.EXTRA_ITEM, position);
@@ -191,17 +99,6 @@ public class StackFavoriteWidgetAdapter implements RemoteViewsService.RemoteView
     @Override
     public boolean hasStableIds() {
         return false;
-    }
-
-    private List<FavoriteEntry> thisMovie(List<FavoriteEntry> entity) {
-
-        for (int i = 0; i < entity.size(); i++) {
-            if (!entity.get(i).isCategory()) {
-                entity.remove(entity.get(i));
-            }
-        }
-
-        return entity;
     }
 
 }

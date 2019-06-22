@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.database.Cursor;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface FavoriteDao {
     LiveData<List<FavoriteEntry>> loadAllFavorite();
 
     @Query("SELECT * FROM favoritetable ORDER BY id ASC")
-    List<FavoriteEntry> loadFavorite();
+    Cursor loadFavoriteCursor();
 
     @Insert
     void insertFavorite(FavoriteEntry favoriteEntry);

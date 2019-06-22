@@ -133,7 +133,18 @@ public class MovieDetailActivity extends AppCompatActivity{
     }
 
     private void saveFavorite(){
-        final FavoriteEntry favoriteEntry = new FavoriteEntry(movie.getId(), isMovie);
+
+        String title;
+        String date;
+        if (isMovie) {
+            title = movie.getTitle();
+            date = movie.getRelease();
+        } else {
+            title = movie.getName();
+            date = movie.getAirDate();
+        }
+
+        final FavoriteEntry favoriteEntry = new FavoriteEntry(movie.getId(), title, movie.getPoster(), date, isMovie);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

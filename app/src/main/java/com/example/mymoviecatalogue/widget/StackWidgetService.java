@@ -6,6 +6,6 @@ import android.widget.RemoteViewsService;
 public class StackWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new StackFavoriteWidgetAdapter(this.getApplicationContext());
+        return new StackFavoriteWidgetAdapter(this.getApplicationContext(), intent);
     }
 }

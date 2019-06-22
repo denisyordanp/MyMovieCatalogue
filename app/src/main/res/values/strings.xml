@@ -23,7 +23,7 @@
     <string name="no_favorite_data">No favorite data</string>
     <string name="unfavorite">Unfavorite</string>
     <string name="search">Search</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Favorite Movie</string>
     <string name="add_widget">Add widget</string>
     <string name="favorite_movie_widget">Favorite Movie Widget</string>
     <string name="message_daily">Lets see some good movie</string>

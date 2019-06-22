@@ -35,5 +35,6 @@
     <string name="today_reminder_deactive">Pengingat rilis harian nonaktif</string>
     <string name="daily_reminder_deactive">Pengingat harian nonaktif</string>
     <string name="message_today">Ayo lihat apa yang rilis hari ini</string>
+    <string name="appwidget_text">Film Kesukaan</string>
 
 </resources>
