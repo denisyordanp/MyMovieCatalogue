@@ -42,10 +42,8 @@ import static com.example.mymoviecatalogue.layout.MovieDetailActivity.EXTRA_FAVO
 
 public class MovieUpcomingReceiver extends BroadcastReceiver {
 
-    private ArrayList<Movie> movies = new ArrayList<>();
-
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
 
         String language = CheckLanguage.getLanguage(context);
 
@@ -60,9 +58,18 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
             public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
 
                 if (response.body() != null) {
-                    movies.addAll(response.body().getResults());
-                }
 
+                    ArrayList<Movie> movie = response.body().getResults();
+
+                    for (int i = 0; i < movie.size(); i++) {
+                        String today = movie.get(i).getRelease();
+                        if (today.equals(getCurrentDate())) {
+                            String desc = context.getResources().getString(R.string.message_today) + movie.get(i).getTitle();
+                            int notifId = 1000;
+                            sendNotification(context, context.getString(R.string.app_name), desc, notifId, movie.get(i));
+                        }
+                    }
+                }
             }
 
             @Override
@@ -70,18 +77,6 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
                 Log.d("Reminder daily", "onFailure");
             }
         });
-
-        if (!movies.isEmpty()) {
-            for (int i = 0; i < movies.size(); i++) {
-                String today = movies.get(i).getRelease();
-                if (today.equals(getCurrentDate())) {
-                    String desc = context.getResources().getString(R.string.message_today) + movies.get(i).getTitle();
-                    int notifId = 1000;
-                    sendNotification(context, context.getString(R.string.app_name), desc, notifId, movies.get(i));
-                }
-            }
-        }
-
     }
 
     private void sendNotification(Context context, String title, String desc, int id, Movie movie) {

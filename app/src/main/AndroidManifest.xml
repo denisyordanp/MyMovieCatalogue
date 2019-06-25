@@ -66,6 +66,11 @@
             android:enabled="true"
             android:exported="true" />
 
+        <receiver
+            android:name=".notification.MovieUpcomingReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
         <provider
             android:authorities="com.example.mymoviecatalogue.provider.FavoriteProvider"
             android:name=".provider.FavoriteProvider"

@@ -291,6 +291,7 @@ public class MovieDetailActivity extends AppCompatActivity{
             public void onItemCLicked(RecyclerView recyclerView, int position, View v) {
                 assert mMovies != null;
                 showMovie(mMovies.get(position));
+                checkFavorite(mMovies.get(position).getId());
             }
         });
     }
