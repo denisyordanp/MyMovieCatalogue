@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 
@@ -21,14 +22,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String API_KEY = "daed568873f1017055f76a70f110e0fb";
-    public static final String BASE_URL = "https://image.tmdb.org/t/p/w500";
-    public final static int NOTIFICATION_ID = 1001;
-    public final static String NOTIFICATION_CHANNEL_ID = "11001";
-    public final static String NOTIFICATION_CHANNEL_NAME = "11001";
-
     private ViewPager viewPager;
-    private String actTitle;
+    private String movieTitle, tvTitle, favoriteTitle;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -40,24 +35,21 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_movie:
 
                     viewPager.setCurrentItem(0);
-                    actTitle = item.getTitle().toString();
-                    initTitle();
+                    initTitle(movieTitle);
 
                     return true;
 
                 case R.id.navigation_tv_series:
 
                     viewPager.setCurrentItem(1);
-                    actTitle = item.getTitle().toString();
-                    initTitle();
+                    initTitle(tvTitle);
 
                     return true;
 
-                case R.id.navigation_favorite:
+                case R.id.navigation_favourite:
 
                     viewPager.setCurrentItem(2);
-                    actTitle = item.getTitle().toString();
-                    initTitle();
+                    initTitle(favoriteTitle);
 
                     return true;
 
@@ -74,19 +66,27 @@ public class MainActivity extends AppCompatActivity {
 
         checkPref();
 
+        tvTitle = getResources().getString(R.string.tv_series);
+        movieTitle = getResources().getString(R.string.movies);
+        favoriteTitle = getResources().getString(R.string.favourite);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         viewPager = findViewById(R.id.view_pager);
         MenuPageAdapter adapter = new MenuPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(adapter.getCount() -1);
 
+        setSupportActionBar(toolbar);
+
         BottomNavigationView navigationItemView = findViewById(R.id.navigation);
         navigationItemView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigationItemView.getMenu().getItem(0).setTitle(R.string.movies);
         navigationItemView.getMenu().getItem(1).setTitle(R.string.tv_series);
-        navigationItemView.getMenu().getItem(2).setTitle(R.string.favorite);
+        navigationItemView.getMenu().getItem(2).setTitle(R.string.favourite);
 
         if (savedInstanceState == null) {
             navigationItemView.setSelectedItemId(R.id.navigation_movie);
+            initTitle(movieTitle);
         } else {
             navigationItemView.setSelectedItemId(savedInstanceState.getInt("nav"));
         }
@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initTitle() {
-        Objects.requireNonNull(getSupportActionBar()).setTitle(actTitle);
+    private void initTitle(String title) {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 
 }

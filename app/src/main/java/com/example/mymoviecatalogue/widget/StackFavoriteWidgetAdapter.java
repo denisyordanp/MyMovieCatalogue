@@ -11,48 +11,72 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.database.AppDatabase;
+import com.example.mymoviecatalogue.database.FavoriteEntry;
 import com.example.mymoviecatalogue.database.MovieContract;
-import com.example.mymoviecatalogue.layout.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.mymoviecatalogue.config.Config.BASE_IMG_URL;
+
 public class StackFavoriteWidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
 
-    private AppDatabase mDb;
     private List<Bitmap> mWidgetItems = new ArrayList<>();
-    private final Context context;
+    private List<FavoriteEntry> favoriteEntryList = new ArrayList<>();
+
+    private Context mContext;
     private Cursor cursor;
+
     private int mAppWIdgetId;
 
     StackFavoriteWidgetAdapter(Context context, Intent intent) {
-        this.context = context;
+        mContext = context;
         mAppWIdgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     @Override
     public void onCreate() {
-        mDb = AppDatabase.getInstance(context);
+
     }
 
     @Override
     public void onDataSetChanged() {
 
-        cursor = mDb.favoriteDao().loadFavoriteCursor();
-        Binder.clearCallingIdentity();
+        getFavourite(mContext);
 
-        while (cursor.moveToNext()) {
-            Bitmap b;
-            try {
-                b = Picasso.with(context).load(MainActivity.BASE_URL + MovieContract.getColumnString(cursor, MovieContract.MovieColumns.POSTER)).get();
-                mWidgetItems.add(b);
-            } catch (IOException e) {
-                e.printStackTrace();
+//        for (FavoriteEntry favoriteEntry : favoriteEntryList){
+//            Bitmap b;
+//            try {
+//                b = Picasso.with(mContext).load(BASE_IMG_URL + favoriteEntry.getPoster()).get();
+//                mWidgetItems.add(b);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+    }
+
+    private void getFavourite(Context mContext) {
+        final long token = Binder.clearCallingIdentity();
+        getResolver(mContext);
+        Binder.restoreCallingIdentity(token);
+    }
+
+    private void getResolver(Context context) {
+        cursor = context.getContentResolver().query(MovieContract.MovieColumns.CONTENT_URI, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                favoriteEntryList.add(new FavoriteEntry(
+                        MovieContract.getColumnInt(cursor, MovieContract.MovieColumns.MV_ID),
+                        MovieContract.getColumnString(cursor, MovieContract.MovieColumns.TITLE),
+                        MovieContract.getColumnString(cursor, MovieContract.MovieColumns.POSTER),
+                        MovieContract.getColumnString(cursor, MovieContract.MovieColumns.DATE),
+                        MovieContract.getColumnInt(cursor, MovieContract.MovieColumns.CATEGORY) > 0
+                ));
             }
         }
+
     }
 
     @Override
@@ -62,17 +86,26 @@ public class StackFavoriteWidgetAdapter implements RemoteViewsService.RemoteView
 
     @Override
     public int getCount() {
-        return mWidgetItems.size();
+        return favoriteEntryList.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
-        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
-        rv.setImageViewBitmap(R.id.imageView, mWidgetItems.get(position));
+        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
+
+        Bitmap b;
+        try {
+            b = Picasso.with(mContext).load(BASE_IMG_URL + favoriteEntryList.get(position).getPoster()).get();
+            rv.setImageViewBitmap(R.id.imageView, b);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        rv.setImageViewBitmap(R.id.imageView, mWidgetItems.get(position));
 
         Bundle extras = new Bundle();
-        extras.putInt(FavoriteMovieWidget.EXTRA_ITEM, position);
+        extras.putString(FavoriteMovieWidget.EXTRA_ITEM, favoriteEntryList.get(position).getTitle());
         Intent fillIntent = new Intent();
         fillIntent.putExtras(extras);
 

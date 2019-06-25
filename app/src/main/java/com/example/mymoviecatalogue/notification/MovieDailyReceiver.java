@@ -20,9 +20,9 @@ import com.example.mymoviecatalogue.layout.MainActivity;
 
 import java.util.Calendar;
 
-import static com.example.mymoviecatalogue.layout.MainActivity.NOTIFICATION_CHANNEL_ID;
-import static com.example.mymoviecatalogue.layout.MainActivity.NOTIFICATION_CHANNEL_NAME;
-import static com.example.mymoviecatalogue.layout.MainActivity.NOTIFICATION_ID;
+import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_ID;
+import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_NAME;
+import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_ID;
 
 public class MovieDailyReceiver extends BroadcastReceiver {
 

@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -41,13 +42,18 @@ public class FavoriteMovieWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-        if (intent.getAction() != null) {
-            if (intent.getAction().equals(TOAST_ACTION)) {
-                int viewIndex = intent.getIntExtra(EXTRA_ITEM, 0);
-                Toast.makeText(context, "Touched view " + viewIndex, Toast.LENGTH_SHORT).show();
+        AppWidgetManager.getInstance(context);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(TOAST_ACTION)) {
+                    intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+                    String viewIndex = intent.getStringExtra(EXTRA_ITEM);
+                    Toast.makeText(context, viewIndex, Toast.LENGTH_SHORT).show();
+                }
             }
         }
+        super.onReceive(context, intent);
     }
 
     @Override

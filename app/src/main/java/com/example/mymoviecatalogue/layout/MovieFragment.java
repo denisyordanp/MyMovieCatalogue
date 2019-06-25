@@ -35,6 +35,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.mymoviecatalogue.config.Config.API_KEY;
+
 public class MovieFragment extends Fragment implements MainView {
 
     private RecyclerView recyclerView;
@@ -46,8 +48,11 @@ public class MovieFragment extends Fragment implements MainView {
     private ArrayList<Movie> movies = new ArrayList<>();
 
     private String language;
+    private boolean isSearch;
+
     private final String LIST_STATE_KEY = "list_key";
     private final String LIST_DATA_KEY = "data_key";
+
     private Parcelable savedRecycleViewState;
 
     public static MovieFragment newInstance() {
@@ -96,13 +101,14 @@ public class MovieFragment extends Fragment implements MainView {
         inflater.inflate(R.menu.main_menu, menu);
 
         SearchView searchView = (SearchView) (menu.findItem(R.id.search).getActionView());
-        searchView.setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.movies));
+        searchView.setQueryHint(getResources().getString(R.string.search) + " " + getResources().getString(R.string.movies) + " ...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
                 showLoading(true);
                 displaySearch(query);
+                isSearch = true;
 
                 return true;
             }
@@ -130,7 +136,9 @@ public class MovieFragment extends Fragment implements MainView {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                displayData(language);
+                if (isSearch) {
+                    displayData(language);
+                }
                 return true;
             }
         });
@@ -152,7 +160,7 @@ public class MovieFragment extends Fragment implements MainView {
                 .getClient()
                 .create(ClientAPI.GetSearch.class);
 
-        Call<MovieResults> call = service.getMovie(MainActivity.API_KEY, language, query);
+        Call<MovieResults> call = service.getMovie(API_KEY, language, query);
         call.enqueue(new Callback<MovieResults>() {
 
             @Override
@@ -178,7 +186,7 @@ public class MovieFragment extends Fragment implements MainView {
                 .getClient()
                 .create(ClientAPI.GetDataService.class);
 
-        Call<MovieResults> call = service.getMovie(MainActivity.API_KEY, language);
+        Call<MovieResults> call = service.getMovie(API_KEY, language);
         call.enqueue(new Callback<MovieResults>() {
 
             @Override

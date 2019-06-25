@@ -10,14 +10,14 @@
         android:id="@+id/rv_movie_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/movie_list"/>
+        tools:listitem="@layout/movie_list" />
 
     <ProgressBar
         android:id="@+id/pb_movie"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_movie_error"

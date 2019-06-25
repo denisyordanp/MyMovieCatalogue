@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,10 +24,13 @@ import com.example.mymoviecatalogue.presenter.CheckLanguage;
 import com.example.mymoviecatalogue.presenter.ClientAPI;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.example.mymoviecatalogue.config.Config.API_KEY;
 
 public class LangugeActivity extends AppCompatActivity {
 
@@ -34,7 +39,7 @@ public class LangugeActivity extends AppCompatActivity {
     private SettingPreference settingPreference;
 
     private Switch dailySwitch, todaySwitch;
-    private RadioButton radioButton;
+    private RadioButton rbEng, rbInd;
 
     private String language;
 
@@ -46,12 +51,14 @@ public class LangugeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_languge);
 
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.setting);
+
         RadioGroup radioGroup = findViewById(R.id.rg_languge);
 
         dailySwitch = findViewById(R.id.daily_switch);
         todaySwitch = findViewById(R.id.today_switch);
-        radioButton = findViewById(R.id.rb_en);
-        radioButton = findViewById(R.id.rb_in);
+        rbEng = findViewById(R.id.rb_en);
+        rbInd = findViewById(R.id.rb_in);
 
         movieDailyReceiver = new MovieDailyReceiver();
         movieUpcomingReceiver = new MovieUpcomingReceiver();
@@ -122,15 +129,16 @@ public class LangugeActivity extends AppCompatActivity {
 
                 finish();
                 startActivity(refresh);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
 
     private void checkLanguage() {
         if (CheckLanguage.getLanguage(this).equals(US)) {
-            radioButton.setChecked(true);
+            rbEng.setChecked(true);
         } else if (CheckLanguage.getLanguage(this).equals(ID)) {
-            radioButton.setChecked(true);
+            rbInd.setChecked(true);
         }
     }
 
@@ -156,7 +164,7 @@ public class LangugeActivity extends AppCompatActivity {
                 .getClient()
                 .create(ClientAPI.getUpcoming.class);
 
-        Call<MovieResults> call = service.getMovie(MainActivity.API_KEY, language, "1");
+        Call<MovieResults> call = service.getMovie(API_KEY, language, "1");
         call.enqueue(new Callback<MovieResults>() {
 
             @Override

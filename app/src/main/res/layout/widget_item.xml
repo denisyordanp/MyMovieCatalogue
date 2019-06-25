@@ -10,6 +10,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:contentDescription="@string/favorite_movie_widget" />
+        android:contentDescription="@string/favourite_movie_widget" />
 
 </LinearLayout>

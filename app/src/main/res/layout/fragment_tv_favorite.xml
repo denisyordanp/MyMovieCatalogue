@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/base"
-    tools:context=".layout.TvFavoriteFragment">
+    tools:context=".layout.TvfavoriteFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_fav_tv_list"
@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/fav_tv_error"
-        android:text="@string/no_favorite_data"
+        android:text="@string/no_favourite_data"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

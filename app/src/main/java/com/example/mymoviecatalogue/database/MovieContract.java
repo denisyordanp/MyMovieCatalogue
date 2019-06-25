@@ -4,18 +4,21 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class MovieContract {
+import static com.example.mymoviecatalogue.config.Config.AUTHORITY;
+import static com.example.mymoviecatalogue.config.Config.SCHEME;
 
-    public static final String AUTHORITY = "com.example.mymoviecatalogue";
+public class MovieContract {
 
     public static final class MovieColumns implements BaseColumns {
 
-        public static final String DB_NAME = "FavoriteDatabase";
-        public static final String TB_NAME = "favoritetable";
+        static final String TB_NAME = "favoritetable";
+        public static final String MV_ID = "movieid";
         public static final String TITLE = "title";
         public static final String POSTER = "poster";
+        public static final String DATE = "date";
+        public static final String CATEGORY = "category";
 
-        public static final Uri CONTENT_URI = new Uri.Builder().scheme("content")
+        public static final Uri CONTENT_URI = new Uri.Builder().scheme(SCHEME)
                 .authority(AUTHORITY)
                 .appendPath(TB_NAME)
                 .build();

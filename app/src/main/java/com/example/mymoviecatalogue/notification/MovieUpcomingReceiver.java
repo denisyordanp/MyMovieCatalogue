@@ -23,9 +23,9 @@ import com.example.mymoviecatalogue.model.Movie;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.example.mymoviecatalogue.layout.MainActivity.NOTIFICATION_CHANNEL_ID;
-import static com.example.mymoviecatalogue.layout.MainActivity.NOTIFICATION_CHANNEL_NAME;
-import static com.example.mymoviecatalogue.layout.MainActivity.NOTIFICATION_ID;
+import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_ID;
+import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_NAME;
+import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_ID;
 import static com.example.mymoviecatalogue.layout.MovieDetailActivity.EXTRA_MOVIE;
 
 public class MovieUpcomingReceiver extends BroadcastReceiver {

@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.mymoviecatalogue.config.Config.BASE_IMG_URL;
+
 public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.MovieViewHolder> {
 
     private Context context;
@@ -79,7 +81,7 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.Movi
 
         Picasso.Builder builder = new Picasso.Builder(context);
         builder.downloader(new OkHttp3Downloader(context));
-        builder.build().load(MainActivity.BASE_URL + movies.get(position).getPoster())
+        builder.build().load(BASE_IMG_URL + movies.get(position).getPoster())
                 .placeholder(progress)
                 .error(R.drawable.ic_error_black_24dp)
                 .fit()

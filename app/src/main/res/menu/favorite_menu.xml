@@ -6,7 +6,7 @@
 
         <item
             android:id="@+id/opt_fav"
-            android:title="@string/favorite"
+            android:title="@string/favourite"
             android:icon="@drawable/ic_favorite_border_white_24dp"
             app:showAsAction="always"/>
 

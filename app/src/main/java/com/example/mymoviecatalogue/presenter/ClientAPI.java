@@ -10,10 +10,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+import static com.example.mymoviecatalogue.config.Config.BASE_URL;
+
 public class ClientAPI {
 
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     public static Retrofit getClient() {
 

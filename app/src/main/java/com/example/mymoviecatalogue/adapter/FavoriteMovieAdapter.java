@@ -12,13 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.layout.MainActivity;
 import com.example.mymoviecatalogue.layout.MovieDetailActivity;
 import com.example.mymoviecatalogue.model.MovieFavorite;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static com.example.mymoviecatalogue.config.Config.BASE_IMG_URL;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.MovieViewHolder>{
 
@@ -99,7 +100,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
         Picasso.Builder builder = new Picasso.Builder(context);
         builder.downloader(new OkHttp3Downloader(context));
-        builder.build().load(MainActivity.BASE_URL + aMovies.get(position).getPosterPath())
+        builder.build().load(BASE_IMG_URL + aMovies.get(position).getPosterPath())
                 .placeholder(progress)
                 .error(R.drawable.ic_error_black_24dp)
                 .fit()

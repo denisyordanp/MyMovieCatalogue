@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CircularProgressDrawable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.mymoviecatalogue.config.Config.BASE_IMG_URL;
+
 public class MovieDetailActivity extends AppCompatActivity{
 
     public static final String EXTRA_MOVIE = "extra_movie";
@@ -54,6 +57,9 @@ public class MovieDetailActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(actionBar).setTitle("");
+
         txtDetailDescription = findViewById(R.id.txt_detail_description);
         txtDetailVote = findViewById(R.id.txt_detail_Vote);
         txtDetailRealese = findViewById(R.id.txt_detail_realese);
@@ -70,9 +76,6 @@ public class MovieDetailActivity extends AppCompatActivity{
         txtDetailTtVote.setText(getResources().getString(R.string.vote));
         txtDetailTtSeemore.setText(getResources().getString(R.string.see_more));
         txtDetailTtOverview.setText(getResources().getString(R.string.overview));
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
@@ -152,7 +155,7 @@ public class MovieDetailActivity extends AppCompatActivity{
             }
         });
 
-        Toast.makeText(this, getResources().getString(R.string.favorite), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.favourite), Toast.LENGTH_SHORT).show();
     }
 
     private void deleteFavorite(final int id){
@@ -163,7 +166,7 @@ public class MovieDetailActivity extends AppCompatActivity{
             }
         });
 
-        Toast.makeText(this, getResources().getString(R.string.unfavorite), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.unfavourite), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -229,7 +232,7 @@ public class MovieDetailActivity extends AppCompatActivity{
 
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttp3Downloader(this));
-        builder.build().load(MainActivity.BASE_URL + sMovie.getPoster())
+        builder.build().load(BASE_IMG_URL + sMovie.getPoster())
                 .error(R.drawable.ic_error_black_24dp)
                 .fit()
                 .centerCrop()
@@ -267,7 +270,7 @@ public class MovieDetailActivity extends AppCompatActivity{
 
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttp3Downloader(this));
-        builder.build().load(MainActivity.BASE_URL + sMovie.getPosterPath())
+        builder.build().load(BASE_IMG_URL + sMovie.getPosterPath())
                 .error(R.drawable.ic_error_black_24dp)
                 .fit()
                 .centerCrop()

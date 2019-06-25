@@ -5,7 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "favoritetable")
+import static com.example.mymoviecatalogue.config.Config.Database.TB_NAME;
+
+@Entity(tableName = TB_NAME)
 public class FavoriteEntry {
 
     @PrimaryKey(autoGenerate = true)

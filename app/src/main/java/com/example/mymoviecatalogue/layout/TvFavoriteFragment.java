@@ -33,6 +33,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.mymoviecatalogue.config.Config.API_KEY;
+
 public class TvFavoriteFragment extends Fragment{
 
     private RecyclerView recyclerView;
@@ -80,7 +82,7 @@ public class TvFavoriteFragment extends Fragment{
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        errorLoad.setText(Objects.requireNonNull(getContext()).getResources().getString(R.string.no_favorite_data));
+        errorLoad.setText(Objects.requireNonNull(getContext()).getResources().getString(R.string.no_favourite_data));
 
         language = CheckLanguage.getLanguage(getContext());
 
@@ -133,7 +135,7 @@ public class TvFavoriteFragment extends Fragment{
                                     .getClient()
                                     .create(ClientAPI.GetFavorite.class);
 
-                            Call<MovieFavorite> call = service.getTv(entity.get(i).getMovieid(), MainActivity.API_KEY, language);
+                            Call<MovieFavorite> call = service.getTv(entity.get(i).getMovieid(), API_KEY, language);
                             call.enqueue(new Callback<MovieFavorite>() {
 
                                 @Override
