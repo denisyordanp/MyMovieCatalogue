@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -19,39 +20,67 @@ import android.util.Log;
 import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.layout.MovieDetailActivity;
 import com.example.mymoviecatalogue.model.Movie;
+import com.example.mymoviecatalogue.model.MovieResults;
+import com.example.mymoviecatalogue.presenter.CheckLanguage;
+import com.example.mymoviecatalogue.presenter.ClientAPI;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.mymoviecatalogue.config.Config.API_KEY;
 import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_ID;
 import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_NAME;
 import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_ID;
-import static com.example.mymoviecatalogue.layout.MovieDetailActivity.EXTRA_MOVIE;
+import static com.example.mymoviecatalogue.layout.MovieDetailActivity.EXTRA_FAVORITE;
 
 public class MovieUpcomingReceiver extends BroadcastReceiver {
 
-    private static int notifId = 1000;
-
-    private static final String TITLE = "title";
-    private static final String M_ID = "movie_id";
-    private static final String POSTER = "poster";
-    private static final String DATE = "date";
-    private static final String RATING = "rating";
-    private static final String OVERVIEW = "overview";
+    private ArrayList<Movie> movies = new ArrayList<>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String movieTitle = intent.getStringExtra(TITLE);
-        int movieId = intent.getIntExtra(M_ID, 0);
-        String poster = intent.getStringExtra(POSTER);
-        String date = intent.getStringExtra(DATE);
-        String rate = intent.getStringExtra(RATING);
-        String ovr = intent.getStringExtra(OVERVIEW);
+        String language = CheckLanguage.getLanguage(context);
 
-        Movie movie = new Movie(poster, movieId, movieTitle, ovr, date, rate, null, null);
-        String desc = context.getResources().getString(R.string.message_today) + movieTitle;
-        sendNotification(context, context.getString(R.string.app_name), desc, notifId, movie);
+        ClientAPI.getUpcoming service = ClientAPI
+                .getClient()
+                .create(ClientAPI.getUpcoming.class);
+
+        Call<MovieResults> call = service.getMovie(API_KEY, language, "1");
+        call.enqueue(new Callback<MovieResults>() {
+
+            @Override
+            public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
+
+                if (response.body() != null) {
+                    movies.addAll(response.body().getResults());
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MovieResults> call, @NonNull Throwable t) {
+                Log.d("Reminder daily", "onFailure");
+            }
+        });
+
+        if (!movies.isEmpty()) {
+            for (int i = 0; i < movies.size(); i++) {
+                String today = movies.get(i).getRelease();
+                if (today.equals(getCurrentDate())) {
+                    String desc = context.getResources().getString(R.string.message_today) + movies.get(i).getTitle();
+                    int notifId = 1000;
+                    sendNotification(context, context.getString(R.string.app_name), desc, notifId, movies.get(i));
+                }
+            }
+        }
 
     }
 
@@ -60,7 +89,7 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent intent = new Intent(context, MovieDetailActivity.class);
-        intent.putExtra(EXTRA_MOVIE, movie);
+        intent.putExtra(EXTRA_FAVORITE, movie);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Uri uriTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -97,34 +126,16 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
         }
     }
 
-    public void setAlarm(Context context, ArrayList<Movie> movieResults) {
-        int delay = 0;
+    public void setAlarm(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        for (Movie movie : movieResults) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context, MovieUpcomingReceiver.class);
-            intent.putExtra(TITLE, movie.getTitle());
-            intent.putExtra(M_ID, movie.getId());
-            intent.putExtra(POSTER, movie.getPoster());
-            intent.putExtra(DATE, movie.getRelease());
-            intent.putExtra(RATING, movie.getVote());
-            intent.putExtra(OVERVIEW, movie.getDescription());
-
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 8);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-
-            if (alarmManager != null) {
-                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + delay, AlarmManager.INTERVAL_DAY, pendingIntent);
-            }
-
-            notifId += 1;
-            delay += 3000;
-            Log.v("title", movie.getTitle());
+        if (alarmManager != null) {
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, getPendingIntent(context));
         }
     }
 
@@ -136,6 +147,10 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
     private static PendingIntent getPendingIntent(Context context) {
         Intent intent = new Intent(context, MovieUpcomingReceiver.class);
         return PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private String getCurrentDate() {
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
 }
