@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import static com.example.mymoviecatalogue.config.Config.BASE_IMG_URL;
 
-public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.MovieViewHolder>{
+public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.MovieViewHolder> {
 
     private Context context;
     private ArrayList<MovieFavorite> aMovies = new ArrayList<>();
@@ -32,40 +32,10 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         this.isMovie = isMovie;
     }
 
-    public void setData(ArrayList<MovieFavorite> movie){
+    public void setData(ArrayList<MovieFavorite> movie) {
         aMovies.clear();
         aMovies.addAll(movie);
         notifyDataSetChanged();
-    }
-
-    class MovieViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvJudul, tvDescription;
-        ImageView imgPhoto;
-
-        MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            tvJudul = itemView.findViewById(R.id.txt_title);
-            tvDescription = itemView.findViewById(R.id.txt_short_des);
-            imgPhoto = itemView.findViewById(R.id.img_photo);
-
-            itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-
-                    int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION){
-
-                        MovieFavorite clickedDataItem = aMovies.get(pos);
-                        Intent intent = new Intent(context, MovieDetailActivity.class);
-                        intent.putExtra(MovieDetailActivity.EXTRA_FAVORITE, clickedDataItem);
-                        context.startActivity(intent);
-                    }
-                }
-            });
-
-        }
     }
 
     @NonNull
@@ -80,16 +50,16 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     @Override
     public void onBindViewHolder(@NonNull final MovieViewHolder holder, final int position) {
 
-        if (isMovie){
+        if (isMovie) {
             holder.tvJudul.setText(aMovies.get(position).getTitle());
-        }else {
+        } else {
             holder.tvJudul.setText(aMovies.get(position).getName());
         }
 
 
-        if (!aMovies.get(position).getOverview().isEmpty()){
+        if (!aMovies.get(position).getOverview().isEmpty()) {
             holder.tvDescription.setText(aMovies.get(position).getOverview());
-        }else {
+        } else {
             holder.tvDescription.setText(context.getResources().getString(R.string.not_available));
         }
 
@@ -112,6 +82,36 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     @Override
     public int getItemCount() {
         return aMovies.size();
+    }
+
+    class MovieViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvJudul, tvDescription;
+        ImageView imgPhoto;
+
+        MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvJudul = itemView.findViewById(R.id.txt_title);
+            tvDescription = itemView.findViewById(R.id.txt_short_des);
+            imgPhoto = itemView.findViewById(R.id.img_photo);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+
+                        MovieFavorite clickedDataItem = aMovies.get(pos);
+                        Intent intent = new Intent(context, MovieDetailActivity.class);
+                        intent.putExtra(MovieDetailActivity.EXTRA_FAVORITE, clickedDataItem);
+                        context.startActivity(intent);
+                    }
+                }
+            });
+
+        }
     }
 
 }

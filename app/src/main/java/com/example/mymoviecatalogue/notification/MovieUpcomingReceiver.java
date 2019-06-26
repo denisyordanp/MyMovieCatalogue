@@ -34,13 +34,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.mymoviecatalogue.config.Config.API_KEY;
+import static com.example.mymoviecatalogue.BuildConfig.API_KEY;
 import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_ID;
 import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_CHANNEL_NAME;
 import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_ID;
 import static com.example.mymoviecatalogue.layout.MovieDetailActivity.EXTRA_FAVORITE;
 
 public class MovieUpcomingReceiver extends BroadcastReceiver {
+
+    private static PendingIntent getPendingIntent(Context context) {
+        Intent intent = new Intent(context, MovieUpcomingReceiver.class);
+        return PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -137,11 +142,6 @@ public class MovieUpcomingReceiver extends BroadcastReceiver {
     public void cancelAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(getPendingIntent(context));
-    }
-
-    private static PendingIntent getPendingIntent(Context context) {
-        Intent intent = new Intent(context, MovieUpcomingReceiver.class);
-        return PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private String getCurrentDate() {

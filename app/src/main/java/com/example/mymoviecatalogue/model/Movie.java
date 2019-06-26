@@ -7,6 +7,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
 
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     @SerializedName("backdrop_path")
     private String poster;
     @SerializedName("title")
@@ -33,6 +44,20 @@ public class Movie implements Parcelable {
         this.vote = vote;
         this.name = name;
         this.airDate = airDate;
+    }
+
+    public Movie() {
+    }
+
+    private Movie(Parcel in) {
+        this.poster = in.readString();
+        this.name = in.readString();
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.title = in.readString();
+        this.description = in.readString();
+        this.airDate = in.readString();
+        this.release = in.readString();
+        this.vote = in.readString();
     }
 
     public Integer getId() {
@@ -99,9 +124,6 @@ public class Movie implements Parcelable {
         this.airDate = airDate;
     }
 
-    public Movie() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -118,27 +140,4 @@ public class Movie implements Parcelable {
         dest.writeString(this.release);
         dest.writeString(this.vote);
     }
-
-    private Movie(Parcel in) {
-        this.poster = in.readString();
-        this.name = in.readString();
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.title = in.readString();
-        this.description = in.readString();
-        this.airDate = in.readString();
-        this.release = in.readString();
-        this.vote = in.readString();
-    }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel source) {
-            return new Movie(source);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
 }

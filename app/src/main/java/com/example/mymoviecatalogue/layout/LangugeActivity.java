@@ -3,8 +3,8 @@ package com.example.mymoviecatalogue.layout;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -23,15 +23,13 @@ import java.util.Objects;
 
 public class LangugeActivity extends AppCompatActivity {
 
+    private static final String ID = "id-ID";
+    private static final String US = "en-US";
     private MovieDailyReceiver movieDailyReceiver;
     private MovieUpcomingReceiver movieUpcomingReceiver;
     private SettingPreference settingPreference;
-
     private Switch dailySwitch, todaySwitch;
     private RadioButton rbEng, rbInd;
-
-    private static final String ID = "id-ID";
-    private static final String US = "en-US";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

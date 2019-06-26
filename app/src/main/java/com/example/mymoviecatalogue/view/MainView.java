@@ -8,5 +8,6 @@ import java.util.ArrayList;
 
 public interface MainView {
     void onError();
+
     void onSuccess(@Nullable ArrayList<Movie> movie);
 }

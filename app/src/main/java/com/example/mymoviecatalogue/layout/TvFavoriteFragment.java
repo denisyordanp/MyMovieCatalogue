@@ -33,18 +33,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.mymoviecatalogue.config.Config.API_KEY;
+import static com.example.mymoviecatalogue.BuildConfig.API_KEY;
 
-public class TvFavoriteFragment extends Fragment{
+public class TvFavoriteFragment extends Fragment {
 
+    private final String LIST_STATE_KEY = "list_key";
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView errorLoad;
     private Button refresh;
-
     private String language;
-    private final String LIST_STATE_KEY = "list_key";
-
     private FavoriteMovieAdapter adapter;
     private boolean isError;
 
@@ -66,7 +64,7 @@ public class TvFavoriteFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             savedRecycleViewState = savedInstanceState.getParcelable(LIST_STATE_KEY);
         }
 
@@ -92,7 +90,7 @@ public class TvFavoriteFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedRecycleViewState != null){
+        if (savedRecycleViewState != null) {
             Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(savedRecycleViewState);
         }
 
@@ -100,7 +98,7 @@ public class TvFavoriteFragment extends Fragment{
 
     }
 
-    private void displayFavorite(){
+    private void displayFavorite() {
 
         MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mainViewModel.getFavorite().observe(this, new Observer<List<FavoriteEntry>>() {
@@ -182,12 +180,12 @@ public class TvFavoriteFragment extends Fragment{
 
     }
 
-    private void onError(boolean state){
+    private void onError(boolean state) {
         showLoading(false);
-        if (state){
+        if (state) {
             errorLoad.setVisibility(TextView.VISIBLE);
             refresh.setVisibility(Button.VISIBLE);
-        }else {
+        } else {
             errorLoad.setVisibility(TextView.GONE);
             refresh.setVisibility(Button.GONE);
         }
@@ -202,18 +200,18 @@ public class TvFavoriteFragment extends Fragment{
         });
     }
 
-    private void showLoading(boolean state){
-        if (state){
+    private void showLoading(boolean state) {
+        if (state) {
             progressBar.setVisibility(ProgressBar.VISIBLE);
-        }else {
+        } else {
             progressBar.setVisibility(ProgressBar.GONE);
         }
     }
 
-    private List<FavoriteEntry> thisMovie(List<FavoriteEntry> entity){
+    private List<FavoriteEntry> thisMovie(List<FavoriteEntry> entity) {
 
-        for (int i = 0; i < entity.size(); i++){
-            if (entity.get(i).isCategory()){
+        for (int i = 0; i < entity.size(); i++) {
+            if (entity.get(i).isCategory()) {
                 entity.remove(entity.get(i));
             }
         }

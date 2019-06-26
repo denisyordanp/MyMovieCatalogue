@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.layout.MainActivity;
 import com.example.mymoviecatalogue.model.Movie;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -35,20 +34,6 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.Movi
         notifyDataSetChanged();
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvJudul, tvDescription;
-        ImageView imgPhoto;
-
-        MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            tvJudul = itemView.findViewById(R.id.txt_title);
-            tvDescription = itemView.findViewById(R.id.txt_short_des);
-            imgPhoto = itemView.findViewById(R.id.img_photo);
-        }
-    }
-
     @NonNull
     @Override
     public ListMovieAdapter.MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,9 +52,9 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.Movi
             holder.tvJudul.setText(movies.get(position).getName());
         }
 
-        if (!movies.get(position).getDescription().isEmpty()){
+        if (!movies.get(position).getDescription().isEmpty()) {
             holder.tvDescription.setText(movies.get(position).getDescription());
-        }else {
+        } else {
             holder.tvDescription.setText(context.getResources().getString(R.string.not_available));
 
         }
@@ -93,6 +78,20 @@ public class ListMovieAdapter extends RecyclerView.Adapter<ListMovieAdapter.Movi
     @Override
     public int getItemCount() {
         return movies.size();
+    }
+
+    class MovieViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvJudul, tvDescription;
+        ImageView imgPhoto;
+
+        MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvJudul = itemView.findViewById(R.id.txt_title);
+            tvDescription = itemView.findViewById(R.id.txt_short_des);
+            imgPhoto = itemView.findViewById(R.id.img_photo);
+        }
     }
 
 }

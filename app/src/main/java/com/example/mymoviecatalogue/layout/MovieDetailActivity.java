@@ -2,11 +2,11 @@ package com.example.mymoviecatalogue.layout;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -33,7 +33,7 @@ import java.util.Objects;
 
 import static com.example.mymoviecatalogue.config.Config.BASE_IMG_URL;
 
-public class MovieDetailActivity extends AppCompatActivity{
+public class MovieDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "extra_movie";
     public static final String EXTRA_ALL_MOVIE = "extra_all_movie";
@@ -85,10 +85,10 @@ public class MovieDetailActivity extends AppCompatActivity{
 
         ArrayList<Movie> movies = getIntent().getParcelableArrayListExtra(EXTRA_ALL_MOVIE);
 
-        if (movies != null && movie != null){
+        if (movies != null && movie != null) {
             showMovie(movie);
             showRecyclerList(movies);
-        }else {
+        } else {
             txtDetailTtSeemore.setVisibility(TextView.GONE);
             showFavorite(favorites);
             isFavorite = true;
@@ -100,7 +100,7 @@ public class MovieDetailActivity extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.favorite_menu, menu);
 
-        if (isFavorite){
+        if (isFavorite) {
             checkFavorite(favorites.getId());
         } else {
             checkFavorite(movie.getId());
@@ -114,17 +114,17 @@ public class MovieDetailActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;
 
             case R.id.opt_fav:
 
-                if (isFavorite){
+                if (isFavorite) {
                     deleteFavorite(favorites.getId());
                     onBackPressed();
-                }else {
+                } else {
                     saveFavorite();
                     setMenuFavorite(true);
                 }
@@ -135,7 +135,7 @@ public class MovieDetailActivity extends AppCompatActivity{
         return true;
     }
 
-    private void saveFavorite(){
+    private void saveFavorite() {
 
         String title;
         String date;
@@ -158,7 +158,7 @@ public class MovieDetailActivity extends AppCompatActivity{
         Toast.makeText(this, getResources().getString(R.string.favourite), Toast.LENGTH_SHORT).show();
     }
 
-    private void deleteFavorite(final int id){
+    private void deleteFavorite(final int id) {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -171,9 +171,9 @@ public class MovieDetailActivity extends AppCompatActivity{
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void checkFavorite(final int id){
+    private void checkFavorite(final int id) {
 
-        new AsyncTask<Void, Void, List<FavoriteEntry>>(){
+        new AsyncTask<Void, Void, List<FavoriteEntry>>() {
 
             @Override
             protected List<FavoriteEntry> doInBackground(Void... voids) {
@@ -183,9 +183,9 @@ public class MovieDetailActivity extends AppCompatActivity{
             @Override
             protected void onPostExecute(List<FavoriteEntry> favoriteEntries) {
                 super.onPostExecute(favoriteEntries);
-                if (!favoriteEntries.isEmpty()){
+                if (!favoriteEntries.isEmpty()) {
                     setMenuFavorite(true);
-                }else {
+                } else {
                     setMenuFavorite(false);
                 }
             }
@@ -193,10 +193,10 @@ public class MovieDetailActivity extends AppCompatActivity{
 
     }
 
-    private void setMenuFavorite(boolean state){
-        if (state){
+    private void setMenuFavorite(boolean state) {
+        if (state) {
             menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_full_24dp));
-        }else {
+        } else {
             menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_favorite_border_white_24dp));
         }
     }
@@ -205,7 +205,7 @@ public class MovieDetailActivity extends AppCompatActivity{
 
         this.movie = sMovie;
 
-        if (sMovie.getTitle() == null){
+        if (sMovie.getTitle() == null) {
             isMovie = false;
         }
 
@@ -217,9 +217,9 @@ public class MovieDetailActivity extends AppCompatActivity{
             txtDetailRealese.setText(sMovie.getAirDate());
         }
 
-        if (!sMovie.getDescription().isEmpty()){
+        if (!sMovie.getDescription().isEmpty()) {
             txtDetailDescription.setText(sMovie.getDescription());
-        }else {
+        } else {
             txtDetailDescription.setText(getResources().getString(R.string.not_available));
         }
 
@@ -243,7 +243,7 @@ public class MovieDetailActivity extends AppCompatActivity{
 
     private void showFavorite(MovieFavorite sMovie) {
 
-        if (sMovie.getTitle() == null){
+        if (sMovie.getTitle() == null) {
             isMovie = false;
         }
 
@@ -255,9 +255,9 @@ public class MovieDetailActivity extends AppCompatActivity{
             txtDetailRealese.setText(sMovie.getAirDate());
         }
 
-        if (!sMovie.getOverview().isEmpty()){
+        if (!sMovie.getOverview().isEmpty()) {
             txtDetailDescription.setText(sMovie.getOverview());
-        }else {
+        } else {
             txtDetailDescription.setText(getResources().getString(R.string.not_available));
         }
 

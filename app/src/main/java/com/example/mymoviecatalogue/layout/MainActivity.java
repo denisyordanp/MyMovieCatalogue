@@ -2,6 +2,7 @@ package com.example.mymoviecatalogue.layout;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         MenuPageAdapter adapter = new MenuPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(adapter.getCount() -1);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
 
         setSupportActionBar(toolbar);
 
@@ -93,7 +93,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private static class MenuPageAdapter extends FragmentPagerAdapter{
+    private void checkPref() {
+        SettingPreference settingPreference = new SettingPreference(this);
+        Locale myLocale;
+
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+
+        if (!settingPreference.getPrefLanguage().isEmpty()) {
+
+            String language = settingPreference.getPrefLanguage().substring(0, 2);
+            myLocale = new Locale(language);
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+    }
+
+    private void initTitle(String title) {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+    }
+
+    private static class MenuPageAdapter extends FragmentPagerAdapter {
 
         MenuPageAdapter(FragmentManager fm) {
             super(fm);
@@ -102,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int i) {
 
-            switch (i){
+            switch (i) {
                 case 0:
                     return MovieFragment.newInstance();
                 case 1:
@@ -118,27 +139,6 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return 3;
         }
-    }
-
-    private void checkPref(){
-        SettingPreference settingPreference = new SettingPreference(this);
-        Locale myLocale;
-
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-
-        if (!settingPreference.getPrefLanguage().isEmpty()){
-
-            String language = settingPreference.getPrefLanguage().substring(0,2);
-            myLocale = new Locale(language);
-            conf.locale = myLocale;
-            res.updateConfiguration(conf, dm);
-        }
-    }
-
-    private void initTitle(String title) {
-        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 
 }

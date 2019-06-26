@@ -12,18 +12,22 @@ public class SettingPreference {
 
     private final SharedPreferences preferences;
 
-    public SettingPreference(Context context){
+    public SettingPreference(Context context) {
         preferences = context.getSharedPreferences(PREF_SETTING, Context.MODE_PRIVATE);
     }
 
-    public void setPrefLanguage(String language){
+    public String getPrefLanguage() {
+        return preferences.getString(PREF_LANGUAGE, "");
+    }
+
+    public void setPrefLanguage(String language) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREF_LANGUAGE, language);
         editor.apply();
     }
 
-    public String getPrefLanguage(){
-        return preferences.getString(PREF_LANGUAGE, "");
+    public Boolean getPrefDailyReminder() {
+        return preferences.getBoolean(PREF_DAILY_REMINDER, false);
     }
 
     public void setPrefDailyReminder(boolean state) {
@@ -32,17 +36,13 @@ public class SettingPreference {
         editor.apply();
     }
 
-    public Boolean getPrefDailyReminder() {
-        return preferences.getBoolean(PREF_DAILY_REMINDER, false);
+    public Boolean getPrefTodayReminder() {
+        return preferences.getBoolean(PREF_TODAY_REMINDER, false);
     }
 
     public void setPrefTodayReminder(boolean state) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(PREF_TODAY_REMINDER, state);
         editor.apply();
-    }
-
-    public Boolean getPrefTodayReminder() {
-        return preferences.getBoolean(PREF_TODAY_REMINDER, false);
     }
 }

@@ -19,13 +19,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.mymoviecatalogue.R;
+import com.example.mymoviecatalogue.adapter.ListMovieAdapter;
 import com.example.mymoviecatalogue.model.Movie;
 import com.example.mymoviecatalogue.model.MovieResults;
 import com.example.mymoviecatalogue.presenter.CheckLanguage;
-import com.example.mymoviecatalogue.presenter.ItemClickSupport;
-import com.example.mymoviecatalogue.adapter.ListMovieAdapter;
-import com.example.mymoviecatalogue.R;
 import com.example.mymoviecatalogue.presenter.ClientAPI;
+import com.example.mymoviecatalogue.presenter.ItemClickSupport;
 import com.example.mymoviecatalogue.view.MainView;
 
 import java.util.ArrayList;
@@ -35,24 +35,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.mymoviecatalogue.config.Config.API_KEY;
+import static com.example.mymoviecatalogue.BuildConfig.API_KEY;
 
 public class MovieFragment extends Fragment implements MainView {
 
+    private final String LIST_STATE_KEY = "list_key";
+    private final String LIST_DATA_KEY = "data_key";
     private RecyclerView recyclerView;
     private ListMovieAdapter adapter;
     private ProgressBar progressBar;
     private TextView errorLoad;
     private Button refresh;
-
     private ArrayList<Movie> movies = new ArrayList<>();
-
     private String language;
     private boolean isSearch;
-
-    private final String LIST_STATE_KEY = "list_key";
-    private final String LIST_DATA_KEY = "data_key";
-
     private Parcelable savedRecycleViewState;
 
     public static MovieFragment newInstance() {
@@ -146,10 +142,10 @@ public class MovieFragment extends Fragment implements MainView {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showLoading(boolean state){
-        if (state){
+    private void showLoading(boolean state) {
+        if (state) {
             progressBar.setVisibility(ProgressBar.VISIBLE);
-        }else {
+        } else {
             progressBar.setVisibility(ProgressBar.GONE);
         }
     }

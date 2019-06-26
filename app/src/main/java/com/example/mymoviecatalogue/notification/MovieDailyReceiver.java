@@ -26,6 +26,11 @@ import static com.example.mymoviecatalogue.config.Config.NOTIFICATION_ID;
 
 public class MovieDailyReceiver extends BroadcastReceiver {
 
+    private static PendingIntent getPendingIntent(Context context) {
+        Intent intent = new Intent(context, MovieDailyReceiver.class);
+        return PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, 0);
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         sendNotification(context, context.getString(R.string.app_name),
@@ -91,11 +96,6 @@ public class MovieDailyReceiver extends BroadcastReceiver {
     public void cancelAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(getPendingIntent(context));
-    }
-
-    private static PendingIntent getPendingIntent(Context context) {
-        Intent intent = new Intent(context, MovieDailyReceiver.class);
-        return PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, 0);
     }
 
 

@@ -21,15 +21,12 @@ public class FavoriteProvider extends ContentProvider {
 
     private static final int CODE_FAVOURITE = 1;
 
-    AppDatabase database;
-    FavoriteDao favoriteDao;
-
-    private static final UriMatcher MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-
     public static final Uri CONTENT_URI = new Uri.Builder().scheme(SCHEME)
             .authority(AUTHORITY)
             .appendPath(TB_NAME)
             .build();
+    private static final UriMatcher MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
+    private FavoriteDao favoriteDao;
 
     static {
         MATCHER.addURI(AUTHORITY, TB_NAME, CODE_FAVOURITE);
@@ -37,7 +34,7 @@ public class FavoriteProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        database = AppDatabase.getInstance(Objects.requireNonNull(getContext()).getApplicationContext());
+        AppDatabase database = AppDatabase.getInstance(Objects.requireNonNull(getContext()).getApplicationContext());
         favoriteDao = database.favoriteDao();
         return true;
     }
@@ -58,13 +55,10 @@ public class FavoriteProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        switch (MATCHER.match(uri)) {
-            case CODE_FAVOURITE:
-                return "vnd.android.cursor.dir/" + AUTHORITY + "." + TB_NAME;
-
-            default:
-                throw new IllegalArgumentException("Unknown Uri: " + uri);
+        if (MATCHER.match(uri) == CODE_FAVOURITE) {
+            return "vnd.android.cursor.dir/" + AUTHORITY + "." + TB_NAME;
         }
+        throw new IllegalArgumentException("Unknown Uri: " + uri);
     }
 
     @Nullable

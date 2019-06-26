@@ -2,7 +2,6 @@ package com.example.mymoviecatalogue.config;
 
 public class Config {
 
-    public static final String API_KEY = "daed568873f1017055f76a70f110e0fb";
     public static final String BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
     public static final int NOTIFICATION_ID = 1001;

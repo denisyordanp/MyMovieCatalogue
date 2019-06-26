@@ -10,14 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mymoviecatalogue.R;
-
-import java.util.Objects;
 
 public class FavoriteFragment extends Fragment {
 
@@ -46,13 +43,13 @@ public class FavoriteFragment extends Fragment {
         ViewPager viewPager = view.findViewById(R.id.vp_favorite);
         FavoritePageAdapter adapter = new FavoritePageAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(adapter.getCount() -1);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
-    private static class FavoritePageAdapter extends FragmentPagerAdapter{
+    private static class FavoritePageAdapter extends FragmentPagerAdapter {
 
         FavoritePageAdapter(FragmentManager fm) {
             super(fm);
@@ -61,7 +58,7 @@ public class FavoriteFragment extends Fragment {
         @Override
         public Fragment getItem(int i) {
 
-            switch (i){
+            switch (i) {
                 case 0:
                     return MovieFavoriteFragment.newInstance();
 
@@ -81,7 +78,7 @@ public class FavoriteFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
 
-            switch (position){
+            switch (position) {
                 case 0:
                     return movies;
 

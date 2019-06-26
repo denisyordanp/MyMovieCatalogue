@@ -7,29 +7,47 @@ import com.google.gson.annotations.SerializedName;
 
 public class MovieFavorite implements Parcelable {
 
+    public static final Creator<MovieFavorite> CREATOR = new Creator<MovieFavorite>() {
+        @Override
+        public MovieFavorite createFromParcel(Parcel source) {
+            return new MovieFavorite(source);
+        }
+
+        @Override
+        public MovieFavorite[] newArray(int size) {
+            return new MovieFavorite[size];
+        }
+    };
     @SerializedName("id")
     private int id;
-
     @SerializedName("title")
     private String title;
-
     @SerializedName("poster_path")
     private String posterPath;
-
     @SerializedName("overview")
     private String overview;
-
     @SerializedName("release_date")
     private String release;
-
     @SerializedName("vote_avarage")
     private String vote;
-
     @SerializedName("name")
     private String name;
-
     @SerializedName("first_air_date")
     private String airDate;
+
+    public MovieFavorite() {
+    }
+
+    private MovieFavorite(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.posterPath = in.readString();
+        this.overview = in.readString();
+        this.release = in.readString();
+        this.vote = in.readString();
+        this.name = in.readString();
+        this.airDate = in.readString();
+    }
 
     public int getId() {
         return id;
@@ -95,10 +113,6 @@ public class MovieFavorite implements Parcelable {
         this.airDate = airDate;
     }
 
-
-    public MovieFavorite() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -115,27 +129,4 @@ public class MovieFavorite implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.airDate);
     }
-
-    protected MovieFavorite(Parcel in) {
-        this.id = in.readInt();
-        this.title = in.readString();
-        this.posterPath = in.readString();
-        this.overview = in.readString();
-        this.release = in.readString();
-        this.vote = in.readString();
-        this.name = in.readString();
-        this.airDate = in.readString();
-    }
-
-    public static final Creator<MovieFavorite> CREATOR = new Creator<MovieFavorite>() {
-        @Override
-        public MovieFavorite createFromParcel(Parcel source) {
-            return new MovieFavorite(source);
-        }
-
-        @Override
-        public MovieFavorite[] newArray(int size) {
-            return new MovieFavorite[size];
-        }
-    };
 }

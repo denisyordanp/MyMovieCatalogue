@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/search"
-        android:title="@string/search"
         android:icon="@drawable/ic_search_black_24dp"
-        app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        android:title="@string/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
 
     <group android:menuCategory="container">
 
         <item
             android:id="@+id/opt_language"
-            android:title="@string/language"
             android:icon="@drawable/baseline_settings_white_18dp"
-            app:showAsAction="always"/>
+            android:title="@string/language"
+            app:showAsAction="always" />
 
     </group>
 

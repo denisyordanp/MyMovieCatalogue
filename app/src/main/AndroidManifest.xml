@@ -42,16 +42,16 @@
 
         <activity
             android:name=".layout.MovieDetailActivity"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".layout.MainActivity">
+            android:parentActivityName=".layout.MainActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".layout.MainActivity" />
         </activity>
         <activity
             android:name=".layout.LangugeActivity"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".layout.MainActivity">
+            android:parentActivityName=".layout.MainActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".layout.MainActivity" />
@@ -63,17 +63,15 @@
 
         <receiver
             android:name=".notification.MovieDailyReceiver"
-            android:enabled="true"
-            android:exported="true" />
+            android:enabled="true" />
 
         <receiver
             android:name=".notification.MovieUpcomingReceiver"
-            android:enabled="true"
-            android:exported="true" />
+            android:enabled="true" />
 
         <provider
-            android:authorities="com.example.mymoviecatalogue.provider.FavoriteProvider"
             android:name=".provider.FavoriteProvider"
+            android:authorities="com.example.mymoviecatalogue.provider.FavoriteProvider"
             android:exported="true"
             android:readPermission="com.example.mymoviecatalogue.READ_DATABASE"
             android:writePermission="com.example.mymoviecatalogue.WRITE_DATABASE" />

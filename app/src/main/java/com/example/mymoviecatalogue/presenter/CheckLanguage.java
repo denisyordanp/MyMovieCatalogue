@@ -13,7 +13,7 @@ public class CheckLanguage {
         SettingPreference settingPreference = new SettingPreference(context);
         String prefLanguage = settingPreference.getPrefLanguage();
 
-        if (prefLanguage.isEmpty()){
+        if (prefLanguage.isEmpty()) {
             switch (context.getResources().getConfiguration().locale.getLanguage()) {
                 case "en":
                     language = "en-US";
@@ -23,7 +23,7 @@ public class CheckLanguage {
                     language = "id-ID";
                     break;
             }
-        }else {
+        } else {
             language = prefLanguage;
         }
 

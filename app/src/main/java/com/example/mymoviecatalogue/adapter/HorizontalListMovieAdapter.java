@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mymoviecatalogue.R;
-import com.example.mymoviecatalogue.layout.MainActivity;
 import com.example.mymoviecatalogue.model.Movie;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -28,19 +27,6 @@ public class HorizontalListMovieAdapter extends RecyclerView.Adapter<HorizontalL
     public HorizontalListMovieAdapter(Context context, ArrayList<Movie> movies) {
         this.context = context;
         this.movies = movies;
-    }
-
-    class MovieViewHolder extends RecyclerView.ViewHolder {
-
-        TextView horizontalTvTitle;
-        ImageView horizontalImgPhoto;
-
-        MovieViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            horizontalTvTitle = itemView.findViewById(R.id.horizontal_rv_tv_title);
-            horizontalImgPhoto = itemView.findViewById(R.id.horizontal_rv_poster);
-        }
     }
 
     @NonNull
@@ -80,6 +66,19 @@ public class HorizontalListMovieAdapter extends RecyclerView.Adapter<HorizontalL
     @Override
     public int getItemCount() {
         return movies.size();
+    }
+
+    class MovieViewHolder extends RecyclerView.ViewHolder {
+
+        TextView horizontalTvTitle;
+        ImageView horizontalImgPhoto;
+
+        MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            horizontalTvTitle = itemView.findViewById(R.id.horizontal_rv_tv_title);
+            horizontalImgPhoto = itemView.findViewById(R.id.horizontal_rv_poster);
+        }
     }
 
 }
