@@ -25,3 +25,4 @@ Library :
 - Retrofit
 - Picasso
 - Room Presistance Database
+- LifeCycle
