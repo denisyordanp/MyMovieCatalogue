@@ -2,6 +2,7 @@
 Dicoding Academy project - My Movie Catalogue.
 
 Tools : Android Studio 3.2
+Pattern : Model, View, Presenter (MVP)
 
 Features :</br>
 
