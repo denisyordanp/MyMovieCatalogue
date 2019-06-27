@@ -15,7 +15,7 @@ Features :</br>
 - Language (Available : English & Indonesian)
 - Reminder (Daily Reminder & Release Today Reminder)</br>
 <a href="https://imgflip.com/gif/34bzx5"><img src="https://i.imgflip.com/34bzx5.gif" title="made at imgflip.com"/></a></br>
-- Stackwidget favourite movie
+- Stackwidget favourite movie</br>
 <a href="https://imgflip.com/gif/34c034"><img src="https://i.imgflip.com/34c034.gif" title="made at imgflip.com"/></a></br>
 - Content Provider (Read & Write favourite movie database)
 
